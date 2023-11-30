@@ -8,7 +8,7 @@
         function see_customers($cari) {
             $where='';
             if($cari!=null || $cari!='') {$where=" WHERE Perusahaan LIKE '%$cari%'";}
-            $get = DB::Connection('mysql_fna')->select("SELECT CustID, DeviceID, KodePerusahaan, Perusahaan, npwp, KontakPerson, Telephone, MataAnggaran FROM acustomer $where");
+            $get = DB::Connection('mysql_fna')->select("SELECT CustID, DeviceID, KodePerusahaan, Perusahaan, npwp, KontakPerson, Telephone, Jabatan, MataAnggaran FROM customer $where");
             if(count($get) == 0) {
                 return response()->json([
                     'status' => 'error',
@@ -32,7 +32,7 @@
         }
 
         function update_customer() {
-            
+
         }
 
         function delete_customer($id) {

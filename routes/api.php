@@ -158,6 +158,9 @@ Route::post('/provider/update', 'App\Http\Controllers\Finance\providersControlle
 Route::post('/provider/delete', 'App\Http\Controllers\Finance\providersController@deleteProvider');
 
 
+//Customer
+Route::post('/customer', 'App\Http\Controllers\Finance\customerController@seeCustomer');
+
 //Module Budget
 Route::get('/budgets/area', 'App\Http\Controllers\Finance\budgetController@seeAreaFinance');
 Route::get('/budgets/depts', 'App\Http\Controllers\Finance\budgetController@seeDeptFinance');
