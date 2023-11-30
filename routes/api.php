@@ -114,7 +114,6 @@ Route::get('/corus/{id}', 'App\Http\Controllers\ICT\corusController@seeOldNumber
 Route::post('/corus/update', 'App\Http\Controllers\ICT\corusController@updateCorus');
 Route::get('/checkcorus', 'App\Http\Controllers\ICT\corusController@checkCorus');
 
-
 //Keuangan
 //datasource
 Route::post('/datasource', 'App\Http\Controllers\Finance\datasourceController@seeDataSource');
@@ -122,7 +121,6 @@ Route::get('/datasource/{id}', 'App\Http\Controllers\Finance\datasourceControlle
 Route::post('/datasource/add', 'App\Http\Controllers\Finance\datasourceController@addDataSource');
 Route::post('/datasource/update', 'App\Http\Controllers\Finance\datasourceController@updateDataSource');
 Route::post('/datasource/delete', 'App\Http\Controllers\Finance\datasourceController@deleteDataSource');
-
 
 //Penerima
 Route::post('/penerima', 'App\Http\Controllers\Finance\penerimaController@seePenerima');
@@ -140,6 +138,10 @@ Route::post('/rekening/delete', 'App\Http\Controllers\Finance\rekeningController
 
 //Bank
 Route::post('/bank', 'App\Http\Controllers\Finance\rekeningController@seeBank');
+Route::get('/bank/{id}', 'App\Http\Controllers\Finance\rekeningController@seeBankById');
+Route::post('/bank/add', 'App\Http\Controllers\Finance\rekeningController@addBank');
+Route::post('/bank/update', 'App\Http\Controllers\Finance\rekeningController@updateBank');
+Route::post('/bank/delete', 'App\Http\Controllers\Finance\rekeningController@deleteBank');
 
 //Curency
 Route::post('/currency', 'App\Http\Controllers\Finance\rekeningController@seeCurrency');

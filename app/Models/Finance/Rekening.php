@@ -5,6 +5,8 @@
 
     class Rekening extends Model {
        
+
+        #bank
         function show_bank($cari) {
             $where = '';
             if($cari!=null || $cari !='') {
@@ -28,12 +30,8 @@
             }
         }
 
-        function show_rekening($datasource, $kodebank) {
-            $where = '';
-            if($datasource!=null) {$where = $where . " AND a.DataSource=$datasource";}
-            if($kodebank!=null) {$where = $where . " AND a.KodeBank='$kodebank'";}
-            $query = "SELECT a.KodeBank, b.NamaBank, a.Branch, a.NoRekening, a.MataUang, a.DataSource, a.MataAnggaran, (SELECT saldo FROM saldo WHERE NoRekening = a.NoRekening AND Tahun = YEAR(NOW()) AND Bulan = MONTH(NOW())) AS saldo FROM rekening a LEFT OUTER JOIN bank b ON a.KodeBank = b.KodeBank WHERE non_aktif = 0 $where ORDER BY a.MataUang";
-            $get = DB::Connection('mysql_fna')->select($query);
+        function see_bank_by_id($id) {
+            $get = DB::Connection('mysql_fna')->select("SnLECT * FROM Bank WHERE KodeBank='$id'");
             if(count($get) == 0 ) {
                 return response()->json([
                     'status' => 'error',
@@ -50,24 +48,48 @@
             }
         }
 
-        function show_rekening_by_id($id) {
-            $get = DB::Connection('mysql_fna')->select("SELECT * FROM rekening where NoRekening = '$id'");
-            if(count($get) == 0 ) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Data kosong',
-                    'title' => 'Gagal'
-                ]);
-            }else{
+        function add_bank($kodebank, $namabank, $kodeonline, $kodeKliring, $kodeRTGS) {
+            $check = DB::Connection('mysql_fna')->select("SELECT * FROM bank WHERE KodeBank='$kodebank'");
+            if(count($check) == 0){
+                $insert = DB::Connection('mysql_fna')->select("INSERT INTO bank(KodeBank, NamaBank, KodeOnline, KodeKliring, KodeRTGS) VALUES('$kodebank', '$namabank', '$kodeonline', '$kodeKliring', '$kodeRTGS')");
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Berhasil mengambil data',
-                    'title' => 'Berhasil',
-                    'data' => $get
+                    'message' => 'Data berhasil ditambah',
+                    'ttitle' => 'Berhasil'
+                ]);
+            }else {
+                return response()->json([
+                    'status' => 'error',
+                    'message'  => 'Data sudah ada',
+                    'title' => 'Gagal'
                 ]);
             }
         }
 
+        function update_bank($kodebank, $namabank, $kodeonline, $kodeKliring, $kodeRTGS) {
+            $update = DB::Connection('mysql_fna')->select("UPDATE bank SET NamaBank='$namabank', KodeOnline='$kodeonline', KodeKliring='$kodeKliring', KodeRTGS='$kodeRTGS' where KodeBank='$kodebank'");
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil diupdate',
+                'title' => 'Berhasil'
+            ]);
+        }
+
+        function delete_bank($array){
+            $total=count($array);
+            for($i=0;$i<$total;$i++) {
+                $delete=DB::Connection('mysql_fna')->select("DELETE FROM bank WHERE KodeBank='$array[$i]'");
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'title' => 'Berhasil',
+                'message' => 'Berhasil menghapus Kode Bank'
+            ]);
+        }
+
+        #currency
         function show_currency($cari) {
             $where = $cari != '' ? " WHERE (MataUang LIKE '%$cari%') OR (NamaMataUang LIKE '%$cari%') OR (Negara LIKE '%$cari%')" : '';
             $get = DB::Connection('mysql_fna')->select("SELECT * FROM currency $where");
@@ -143,6 +165,47 @@
                 'title' => 'Berhasil',
                 'message' => 'Berhasil menghapus mata uang'
             ]);
+        }
+
+        #rekening
+        function show_rekening($datasource, $kodebank) {
+            $where = '';
+            if($datasource!=null) {$where = $where . " AND a.DataSource=$datasource";}
+            if($kodebank!=null) {$where = $where . " AND a.KodeBank='$kodebank'";}
+            $query = "SELECT a.KodeBank, b.NamaBank, a.Branch, a.NoRekening, a.MataUang, a.DataSource, a.MataAnggaran, (SELECT saldo FROM saldo WHERE NoRekening = a.NoRekening AND Tahun = YEAR(NOW()) AND Bulan = MONTH(NOW())) AS saldo FROM rekening a LEFT OUTER JOIN bank b ON a.KodeBank = b.KodeBank WHERE non_aktif = 0 $where ORDER BY a.MataUang";
+            $get = DB::Connection('mysql_fna')->select($query);
+            if(count($get) == 0 ) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data kosong',
+                    'title' => 'Gagal'
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Berhasil mengambil data',
+                    'title' => 'Berhasil',
+                    'data' => $get,
+                ]);
+            }
+        }
+    
+        function show_rekening_by_id($id) {
+            $get = DB::Connection('mysql_fna')->select("SELECT * FROM rekening where NoRekening = '$id'");
+            if(count($get) == 0 ) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data kosong',
+                    'title' => 'Gagal'
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Berhasil mengambil data',
+                    'title' => 'Berhasil',
+                    'data' => $get
+                ]);
+            }
         }
 
         function add_rekening($kodeBank, $noRek, $matauang, $branch, $pemilik, $mataanggaran, $bm_prefix, $bk_prefix, $tr_prefix, $datasource) {

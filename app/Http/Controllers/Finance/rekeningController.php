@@ -16,6 +16,34 @@
             return $this->model->show_bank($req->input('cari'));
         }
 
+        public function seeBankById($id) {
+            return $this->model->see_bank_by_id($id);
+        }
+
+        public function addBank(Request $req) {
+            return $this->model->add_bank(
+                $req->input('KodeBank'),
+                $req->input('NamaBank'),
+                $req->input('KodeOnline'),
+                $req->input('KodeKliring'),
+                $req->input('KodeRTGS')
+            );
+        }
+
+        public function updateBank(Request $req) {
+            return $this->model->update_bank(
+                $req->input('KodeBank'),
+                $req->input('NamaBank'),
+                $req->input('KodeOnline'),
+                $req->input('KodeKliring'),
+                $req->input('KodeRTGS')
+            );
+        }
+
+        public function deleteBank(Request $req) {
+            return $this->model->delete_bank($req->input('KodeBank'));
+        }
+
         #rekening
         public function seeNoRek(Request $req) {
             return $this->model->show_rekening($req->input('DataSource'), $req->input('KodeBank'));
