@@ -117,7 +117,7 @@
 
             Swal.fire({
                 title: 'Kamu yakin?',
-                text: 'Data akan terhapus secar permanen',
+                text: 'Data akan terhapus secara permanen',
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'Batal',
@@ -129,7 +129,7 @@
                         url: url_api + '/provider/delete',
                         type: 'post',
                         data: {
-                            ProviderID: arrat
+                            ProviderID: array
                         },
                         success: function(res){
                             Swal.fire(res.title, res.message, res.status)
