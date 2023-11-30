@@ -170,6 +170,7 @@
                         </tr>`
                     })
                 }else {
+                    $('#total-produsen').html(0)
                     tb = tb + `<tr><td colspan="8" style="text-align: center;"></td></tr>`
                 }
 
@@ -179,6 +180,10 @@
     }
 
     $(document).ready(function() {
+        show_tables()
+    })
+
+    $('#cari').on('keyup', function(){
         show_tables()
     })
 </script>
