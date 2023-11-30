@@ -11,14 +11,13 @@
                 </div>
                 <div class="card-body mt-3">
                     <div class="row">
-                        <div class="col-auto">
-                            <input type="text" class="form-control form-control-sm" placeholder="Cari" id="cari">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control form-control-sm" placeholder="Cari berdasarkan Penerima atau Perusahaan" id="cari">
                         </div>
                         <div class="col-md-12 mt-3">
                             <div class="table-responsive" style="height: 400px">
                                 <table class="table table-sm table-striped table-hover caption-top">
-                                    <caption>Total Penerima: <span id="jumlah"></span></caption>
-                                    <thead >
+                                    <thead style="background: white; position: sticky; top: 0;box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);">
                                         <th class="col">#</th>
                                         <th class="col">Penerima</th>
                                         <th class="col">Perusahaan</th>
@@ -33,12 +32,12 @@
                                         <th class="col">Kode Bank USD</th>
                                         <th class="col">No. Rekening USD</th>
                                         <th class="col">eMail</th>
-
                                         <th class="col" colspan="2">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-penerima"></tbody>
                                 </table>
                             </div>
+                            <caption>Total Penerima: <span id="jumlah"></span></caption>
                         </div>
                         
                     </div>
@@ -122,7 +121,10 @@
     function show_tables() {
         $.ajax({
             url: url_api + '/penerima',
-            type: 'get',
+            type: 'post',
+            data: {
+                cari: $('#cari').val()
+            },
             success: function(res) {
                 if(res.status == 'success') {
                    var data = res.data
@@ -151,6 +153,9 @@
                             <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data(${items.npwp_id})">Edit</button></td>
                             </tr>`
                     })
+                }else {
+                    $('#jumlah').html(0)
+                    tb = tb + `<tr><td colspan="15" style="text-align: center;">Data tidak ditemukan</td></tr>`
                 }
 
                 $('#tbl-penerima').html(tb)
@@ -162,9 +167,9 @@
         show_tables()
     })
 
-    function del_data(id) {
-        Swal.fire('deleted', 'Hapus', 'success')
-    }
+    $('#cari').on('keyup', function() {
+        show_tables()
+    })
 
     function edit_data(id) {
         var user = `<?php echo $user;?>`;
@@ -177,7 +182,4 @@
             }
         })
     }
-
-
-
 </script>
