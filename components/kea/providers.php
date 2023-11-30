@@ -8,14 +8,13 @@
                     <h4 class="text-title text-white">Data Providers/Produsen</h4>
                 </div>
                 <div class="card-body mt-3">
-                    <div class="row mb-3"></div>
+                    <div class="row mb-3">
+                        <div class="col-md-6"><input type="text" class="form-control form-control-sm" placeholder="Cari Berdasarkan Kode atau nama" id="cari"></div>
+                    </div>
                     <div class="row mb-3">
                         <div class="col-md-12 mt-3">
                             <div class="table-responsive" style="height:400px;">
                                 <table class="table table-sm table-hover table-striped caption-top">
-                                    <caption>Total Produsen: 
-                                        <span id="total-produsen"></span>
-                                    </caption>
                                     <thead style="background: white; position: sticky; top: 0;box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);">
                                         <th class="col">#</th>
                                         <th class="col">Kode Provider</th>
@@ -30,6 +29,7 @@
 
                                 </table>
                             </div>
+                            <caption>Total Produsen:<span id="total-produsen"></span></caption>
                         </div>
                     </div>
                 </div>
@@ -150,15 +150,17 @@
         var tb = ''
         $.ajax({
             url: url_api + '/providers',
-            type: 'get',
+            type: 'post',
+            data: {cari: $('#cari').val()},
             success: function(res) {
                 if(res.status == 'success') {
                     var data = res.data 
                     $('#total-produsen').html(data.length)
                     data.forEach(function(items, index) {
-                        tb = tb + `<tr>
-                             <td class="col-1"><input type="checkbox" class="form-check-input  checked" value="${items.ProviderID}"> </td>
-                             <td>${items.ProviderID}</td>
+                        tb = tb + 
+                        `<tr>
+                            <td class="col-1"><input type="checkbox" class="form-check-input  checked" value="${items.ProviderID}"> </td>
+                            <td>${items.ProviderID}</td>
                             <td>${items.Perusahaan}</td>
                             <td>${items.NPWP}</td>
                             <td>${items.Rekening_USD}</td>
@@ -167,6 +169,8 @@
                             <td>${items.COANonGas}</td>
                         </tr>`
                     })
+                }else {
+                    tb = tb + `<tr><td colspan="8" style="text-align: center;"></td></tr>`
                 }
 
                 $('#tbl-providers').html(tb)
