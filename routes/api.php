@@ -132,13 +132,14 @@ Route::post('/penerima/add', 'App\Http\Controllers\Finance\penerimaController@ad
 Route::post('/penerima/update', 'App\Http\Controllers\Finance\penerimaController@editPenerima');
 
 //Rekening
-Route::get('/bank', 'App\Http\Controllers\Finance\rekeningController@seeBank');
 Route::post('/rekening', 'App\Http\Controllers\Finance\rekeningController@seeNoRek');
 Route::get('/rekening/{id}', 'App\Http\Controllers\Finance\rekeningController@seeNoRekById');
 Route::post('/rekening/add', 'App\Http\Controllers\Finance\rekeningController@addRekening');
 Route::post('/rekening/update', 'App\Http\Controllers\Finance\rekeningController@updateRekening');
 Route::post('/rekening/delete', 'App\Http\Controllers\Finance\rekeningController@deleteRekening');
 
+//Bank
+Route::post('/bank', 'App\Http\Controllers\Finance\rekeningController@seeBank');
 
 //Curency
 Route::post('/currency', 'App\Http\Controllers\Finance\rekeningController@seeCurrency');

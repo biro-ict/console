@@ -5,8 +5,13 @@
 
     class Rekening extends Model {
        
-        function show_bank() {
-            $get = DB::Connection('mysql_fna')->select("SELECT * FROM bank ORDER BY NamaBank");
+        function show_bank($cari) {
+            $where = '';
+            if($cari!=null || $cari !='') {
+                $where=" WHERE NamaBank LIKE '%$cari%'";
+            }
+
+            $get = DB::Connection('mysql_fna')->select("SELECT * FROM bank $where ORDER BY NamaBank");
             if(count($get) == 0 ) {
                 return response()->json([
                     'status' => 'error',

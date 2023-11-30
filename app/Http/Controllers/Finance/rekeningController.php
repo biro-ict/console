@@ -11,36 +11,18 @@
             $this->model = new Rekening();
         }
 
-        public function seeBank() {
-            return $this->model->show_bank();
+        #bank
+        public function seeBank(Request $req) {
+            return $this->model->show_bank($req->input('cari'));
         }
 
+        #rekening
         public function seeNoRek(Request $req) {
             return $this->model->show_rekening($req->input('DataSource'), $req->input('KodeBank'));
         }
 
         public function seeNoRekById($id) {
             return $this->model->show_rekening_by_id($id);
-        }
-
-        public function seeCurrency(Request $req) {
-            return $this->model->show_currency($req->input('cari'));
-        }
-
-        public function seeCurrencyById($id) {
-            return $this->model->show_currency_by_id($id);
-        }
-
-        public function addCurrency(Request $req) {
-            return $this->model->add_currency($req->input('MataUang'), $req->input('NamaMataUang'), $req->input('Negara'));
-        }
-
-        public function updateCurrency(Request $req) {
-            return $this->model->edit_currency($req->input('MataUang'), $req->input('NamaMataUang'), $req->input('Negara'));
-        }
-
-        public function deleteCurrency(Request $req) {
-            return $this->model->delete_currency($req->input('currency'));
         }
 
         public function addRekening(Request $req) {
@@ -76,6 +58,29 @@
         public function deleteRekening(Request $req) {
             return $this->model->delete_rekening($req->input('NoRekening'));
         }
+
+        #currency
+        public function seeCurrency(Request $req) {
+            return $this->model->show_currency($req->input('cari'));
+        }
+
+        public function seeCurrencyById($id) {
+            return $this->model->show_currency_by_id($id);
+        }
+
+        public function addCurrency(Request $req) {
+            return $this->model->add_currency($req->input('MataUang'), $req->input('NamaMataUang'), $req->input('Negara'));
+        }
+
+        public function updateCurrency(Request $req) {
+            return $this->model->edit_currency($req->input('MataUang'), $req->input('NamaMataUang'), $req->input('Negara'));
+        }
+
+        public function deleteCurrency(Request $req) {
+            return $this->model->delete_currency($req->input('currency'));
+        }
+
+      
 
     }
     
