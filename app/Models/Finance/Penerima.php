@@ -4,8 +4,13 @@
     use DB;
 
     class Penerima extends Model {
-        function see_penerima() {
-            $get = DB::Connection('mysql_fna')->select("SELECT a.npwp_id, a.penerima, a.Perusahaan, (CASE WHEN a.isPerson = 1 THEN 'Perorangan' ELSE 'Perusahaan' END) AS isPerson, a.npwp, a.alamat_1, a.alamat_2, a.alamat_3, a.KodeBankIDR, a.NoRek, a.Bank, a.KodeBankUSD, a.BankUSD, a.mail  FROM npwp a ORDER BY a.penerima ");
+        function see_penerima($cari) {
+            $where = '';
+            if($cari!=null || $cari!='') {
+                $where = " WHERE (a.penerima LIKE '%$cari%') OR (a.Perusahaan LIKE '%$cari%')";
+            }
+
+            $get = DB::Connection('mysql_fna')->select("SELECT a.npwp_id, a.penerima, a.Perusahaan, (CASE WHEN a.isPerson = 1 THEN 'Perorangan' ELSE 'Perusahaan' END) AS isPerson, a.npwp, a.alamat_1, a.alamat_2, a.alamat_3, a.KodeBankIDR, a.NoRek, a.Bank, a.KodeBankUSD, a.BankUSD, a.mail  FROM npwp a $where ORDER BY a.penerima ");
 
             if(count($get) == 0) {
                 return response()->json([

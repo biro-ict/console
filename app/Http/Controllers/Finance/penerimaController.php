@@ -11,8 +11,8 @@
             $this->model = new Penerima();
         }
 
-        public function seePenerima() {
-            return $this->model->see_penerima();
+        public function seePenerima(Request $req) {
+            return $this->model->see_penerima($req->input('cari'));
         }
 
         public function seePenerimaById($id){

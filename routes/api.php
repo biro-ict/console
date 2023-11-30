@@ -125,7 +125,7 @@ Route::post('/datasource/delete', 'App\Http\Controllers\Finance\datasourceContro
 
 
 //Penerima
-Route::get('/penerima', 'App\Http\Controllers\Finance\penerimaController@seePenerima');
+Route::post('/penerima', 'App\Http\Controllers\Finance\penerimaController@seePenerima');
 Route::get('/penerima/{id}', 'App\Http\Controllers\Finance\penerimaController@seePenerimaById');
 Route::post('/penerima/delete', 'App\Http\Controllers\Finance\penerimaController@deletePenerima');
 Route::post('/penerima/add', 'App\Http\Controllers\Finance\penerimaController@addPenerima');
