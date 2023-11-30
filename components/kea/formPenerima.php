@@ -73,7 +73,7 @@
                         <div class="col-md-3 mb-3"><label>Email </label></div>
                         <div class="col-md-9 mb-3">
                             <input type="text" class="form-control form-control-sm" id="mail">
-                            <small>Pemisah menggunakan ;</small>
+                            <p style="font-size: small;font-style: italic; color: red;">Pemisah menggunakan ;</p>
                         </div>
                        
 
