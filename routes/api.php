@@ -148,7 +148,7 @@ Route::post('/currency/update', 'App\Http\Controllers\Finance\rekeningController
 Route::post('/currency/delete', 'App\Http\Controllers\Finance\rekeningController@deleteCurrency');
 
 //Providers atau Produsen
-Route::get('/providers', 'App\Http\Controllers\Finance\providersController@seeProviders');
+Route::post('/providers', 'App\Http\Controllers\Finance\providersController@seeProviders');
 Route::get('/provider/{id}', 'App\Http\Controllers\Finance\providersController@seeProvidersById');
 Route::post('/provider/add', 'App\Http\Controllers\Finance\providersController@addProvider');
 Route::post('/provider/update', 'App\Http\Controllers\Finance\providersController@updateProvider');

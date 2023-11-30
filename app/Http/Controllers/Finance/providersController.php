@@ -11,8 +11,8 @@
             $this->model = new Providers();
         }
 
-        public function seeProviders() {
-            return $this->model->see_providers();
+        public function seeProviders(Request $req) {
+            return $this->model->see_providers($req->input('cari'));
         }
 
         public function seeProvidersById($id) {

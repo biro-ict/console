@@ -4,8 +4,14 @@
     use DB;
 
     class Providers extends Model {
-        function see_providers() {
-            $get = DB::Connection('mysql_fna')->select("SELECT ProviderID, Perusahaan, ifnull(NPWP, '') as NPWP, ifnull(Rekening_USD, '') as Rekening_USD, ifnull(Rekening_IDR, '') as Rekening_IDR, MataAnggaran, COANonGas FROM provider");
+        function see_providers($cari) {
+            $where = '';
+
+            if($cari  != null || $cari != '') {
+                $where = " Where (ProviderID LIKE '%$cari%') OR (Perusahaan LIKE '%$cari%')";
+            }
+
+            $get = DB::Connection('mysql_fna')->select("SELECT ProviderID, Perusahaan, ifnull(NPWP, '') as NPWP, ifnull(Rekening_USD, '') as Rekening_USD, ifnull(Rekening_IDR, '') as Rekening_IDR, MataAnggaran, COANonGas FROM provider $where");
             if(count($get) == 0) {
                 return response()->json([
                     'status' => 'error',
