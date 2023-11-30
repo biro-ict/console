@@ -81,6 +81,7 @@
                 'warning'
             )
         }else{
+            var value = document.querySelector('.checked:checked').value
             var user = `<?php echo $user;?>`;
             $.ajax({
                 url: '../components/kea/formBank.php',

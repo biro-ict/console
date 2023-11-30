@@ -177,7 +177,7 @@
 
         $.ajax({
             url: url_api + '/bank',
-            type: 'get',
+            type: 'post',
             success: function(res) {
                 var opt = "<option value=''>Semua Kode Bank</option>";
                 if(res.status=='success') {
