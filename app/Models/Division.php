@@ -7,7 +7,7 @@
 
         function see_division() {
             $get = DB::table('division')->where('deleted', 0)->get();
-            if($get == 0) {
+            if(count($get) == 0) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Sorry, nothing found',
@@ -34,7 +34,7 @@
 
             $query = "SELECT * FROM division WHERE deleted=0 $where ORDER BY divisionName ASC";
             $get = DB::select($query);
-            if($get == 0) {
+            if(count($get) == 0) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Sorry, nothing found',

@@ -17,7 +17,7 @@ Route::get('/defaultapps', 'App\Http\Controllers\Auth\authController@showDefault
 //users
 Route::post('/users/dashboard', 'App\Http\Controllers\Users\usersController@dashboardUsers');
 
-
+//HRD
 //Employee
 Route::get('/empl/all', 'App\Http\Controllers\employeeController@seeEmployee');
 Route::get('/empl/{id}', 'App\Http\Controllers\employeeController@seeEmplById');
@@ -44,6 +44,9 @@ Route::post('/dir/add', 'App\Http\Controllers\directoryController@addDir');
 Route::post('/dir/update', 'App\Http\Controllers\directoryController@updateDir');
 Route::post('/dir/delete', 'App\Http\Controllers\directoryController@deleteDir');
 
+//Division
+Route::get('/division/all', 'App\Http\Controllers\divisionController@seeDivision');
+
 //branch
 Route::get('/branches/all', 'App\Http\Controllers\branchController@seeBranch');
 Route::get('/branches/{id}', 'App\Http\Controllers\branchController@seeBranchById');
@@ -60,6 +63,8 @@ Route::post('/depts/add', 'App\Http\Controllers\departmentsController@addDepts')
 Route::post('/depts/update', 'App\Http\Controllers\departmentsController@updateDepts');
 Route::post('/depts/delete', 'App\Http\Controllers\departmentsController@deleteDepts');
 
+
+//ICT
 //Apps
 Route::get('/apps/all', 'App\Http\Controllers\applicationController@seeApps');
 Route::get('/apps/details/all', 'App\Http\Controllers\applicationController@seeDetailsApps');
