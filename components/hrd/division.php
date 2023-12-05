@@ -27,14 +27,10 @@
                                         <th class="col">#</th>
                                         <th class="col">Nama</th>
                                         <th class="col">Kode</th>
-                                        <th class="col">Direc</th>
+                                        <th class="col">Directory</th>
                                         <th class="col">Level</th>
-                                        <th class="col">Departemen</th>
-                                        <th class="col">Branch</th>
-                                        <th class="col">Status</th>
-                                        <th class="col" colspan="3">Aksi</th>
                                     </thead>
-                                    <tbody id="tbl-dirs"></tbody>
+                                    <tbody id="tbl-division"></tbody>
                                 </table>
                             </div>
                         </content>
@@ -42,12 +38,37 @@
                     </div>
                 </main>
                 
-                <div class="card-footer mt-3">
-                    <button type="button" class="btn btn-primary btn-sm" id="addDepts">Tambah</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="backto">Kembali</button>
-                </div>
+                <footer class="card-footer mt-3">
+                    <button type="button" class="btn btn-primary btn-sm" id="addDivison">Tambah</button>
+                    <button type="button" class="btn btn-info btn-sm" id="updateDivision">Ubah</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="deleteDivision">Hapus</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
+                </footer>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $('#backto').on('click', function() {
+        window.location.go(-1)
+    })
+
+
+    function show_table() {
+
+    }
+
+    $('#addDivision').on('click', function() {
+
+    })
+
+    $('#updateDivision').on('click', function() {
+
+    })
+
+    $('#deleteDivision').on('click', function() {
+        
+    })
+</script>
 
