@@ -10,11 +10,9 @@
                 <main class="card-body mt-3">
                     <div class="row">
                         <div class="col-auto mb-3">
-                            <select class="form-select form-select-sm" id="show-branch"></select>
+                            <select class="form-select form-select-sm" id="show-dirs"></select>
                         </div>
-                        <div class="col-auto mb-3">
-                            <select class="form-select form-select-sm" id="show-depts"></select>
-                        </div>
+                    
                         <div class="col-auto mb-3">
                             <input type="text" class="form-control form-control-sm" placeholder="Cari" id="cari">
                         </div>
@@ -53,8 +51,14 @@
     })
 
 
-    function show_table() {
-
+    function show_tables() {
+        var cari = document.getElementById('cari').value
+        var dirs = document.getElementById('show-dirs').value
+        var tb = ''
+        var tbody = document.getElementById('tbl-division')
+        
+        tb = '<tr><td colspan="5" class="text-center">Sorry, Nothing found</td></tr>'
+        tbody.innerHTML = tb
     }
 
     $('#addDivision').on('click', function() {
@@ -149,6 +153,33 @@
 
     $(document).ready(function() {
         show_tables()
+
+        $.ajax({
+            url: url_api + '/dir/search',
+            type: 'post',
+            success: function(res) {
+                var option = '<option>Semua Direktorat</option>'
+                if(res.status=='success') {
+                    var data = res.data
+                    data.forEach(function(items, rows) {
+                        option = option + `<option value="${items.id}">${items.name}  [${items.orgName}]</option>`
+                    })
+                }
+
+                $('#show-dirs').html(option)
+            }
+        })
     })
+    
+    $('#cari').on('keyup', function() {
+        show_tables()
+      
+    })
+
+    $('#show-dirs').on('click', function() {
+        show_tables()
+    })
+
+    
 </script>
 

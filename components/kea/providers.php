@@ -37,7 +37,8 @@
                     <button type="button" class="btn btn-primary btn-sm" id="toFormadd">Tambah</button>
                     <button type="button" class="btn btn-info btn-sm" id="toFormsedit">Edit</button>
                     <button type="button" class="btn btn-danger btn-sm" id="toDelete">Hapus</button>
-                    <button type="button" class="btn btn-secondary btn-sm" id="back">Kembali</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="back">Kembali
+                    </button>
                 </div>
             </div>
         </div>
