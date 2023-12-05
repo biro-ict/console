@@ -1,6 +1,4 @@
-<?php 
-    $user = isset($_GET['user']) ? $_GET['user'] : '';
-?>
+<?php $user = isset($_GET['user']) ? $_GET['user'] : '';?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="row">
@@ -60,15 +58,97 @@
     }
 
     $('#addDivision').on('click', function() {
-
+        var user = `<?php echo $user;?>`;
+        $.ajax({
+            url: '../components/hrd/formDivision.php',
+            type: 'get',
+            data: {user: user},
+            success: function(res) {
+                $('#content-user').html(res)
+            }
+        })
     })
 
     $('#updateDivision').on('click', function() {
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
 
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih Divisi terlebih dahulu',
+                'warning'
+            )
+        }else if(totals > 1){
+            Swal.fire(
+                'Peringatan',
+                'Harap pilih hanya satu Divisi',
+                'warning'
+            )
+        }else{
+            var value = document.querySelector('.checked:checked').value
+            var user = `<?php echo $user;?>`;
+            $.ajax({
+                url: '../components/kea/formDivision.php',
+                type: 'get',
+                data: {user:user, id: value},
+                success: function(res) {
+                    $('#content-user').html(res)
+                }
+            })
+        }
     })
 
     $('#deleteDivision').on('click', function() {
-        
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
+
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih Divisi terlebih dahulu',
+                'warning'
+            )
+        }else {
+            $('#tbl-division input[type=checkbox]:checked').each(function() {
+                var row = $(this).val()
+                array.push(row)
+           })
+
+            Swal.fire({
+                title: 'Kamu yakin?',
+                text: 'Data akan terhapus secara permanen',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Batal',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    $.ajax({
+                        url: url_api + '/division/delete',
+                        type: 'post',
+                        data: {
+                            divisiID: array
+                        },
+                        success: function(res){
+                            Swal.fire(res.title, res.message, res.status)
+                            if(res.status == 'success') show_tables()
+                        }
+                    })
+                }else{
+                    Swal.fire('Batal', 'Data batal hapus', 'warning')
+                }
+            })
+        }
+    })
+
+    $(document).ready(function() {
+        show_tables()
     })
 </script>
 
