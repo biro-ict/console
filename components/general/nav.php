@@ -58,8 +58,23 @@
             </a>
         </li>  
         <li class="menu-item">
+            <a href="data.php?id=division" class="menu-link">
+                <div data-i18n="Notifications"><small>Data Divisi</small></div>
+            </a>
+        </li>  
+        <li class="menu-item">
             <a href="data.php?id=depts" class="menu-link">
                 <div data-i18n="Notifications"><small>Data Departemen</small></div>
+            </a>
+        </li>  
+        <li class="menu-item">
+            <a href="data.php?id=grade" class="menu-link">
+                <div data-i18n="Notifications"><small>Data Grade</small></div>
+            </a>
+        </li>  
+        <li class="menu-item">
+            <a href="data.php?id=status" class="menu-link">
+                <div data-i18n="Notifications"><small>Data Status</small></div>
             </a>
         </li>  
         <li class="menu-item">
