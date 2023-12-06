@@ -39,7 +39,15 @@
 
 <script type="text/javascript">
     $('#addGrade').on('click', function() {
-
+        var user = `<?php echo $user;?>`;
+        $.ajax({
+            url: '../components/hrd/formGrade.php',
+            type: 'get',
+            data: {user: user},
+            success: function(res) {
+                $('#content-user').html(res)
+            }
+        })
     })
 
     $('#updateGrade').on('click', function(){
