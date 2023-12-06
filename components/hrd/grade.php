@@ -36,3 +36,29 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $('#addGrade').on('click', function() {
+
+    })
+
+    $('#updateGrade').on('click', function(){
+
+    })
+
+    $('#deleteGrade').on('click', function() {
+
+    })
+
+    $('#backto').on('click', function() {
+        window.location.go(-1)
+    })
+
+    function show_tables() {
+
+    }
+
+    $(document).ready(function() {
+        show_tables()
+    })
+</script>
