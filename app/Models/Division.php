@@ -81,7 +81,7 @@
                 'title' => 'Duplicate'
             ]);
         }else {
-            $query = "UPDATE division SET divisionName='$divisiCode', divisiCode='$divisiCode', dirId='$dirId' WHERE id=$id)";
+            $query = "UPDATE division SET divisionName='$divisionName', divisiCode='$divisiCode', dirId='$dirId' WHERE id=$id)";
             $insert = DB::SELECT($query);
             return response()->json([
                 'status' => 'success',
