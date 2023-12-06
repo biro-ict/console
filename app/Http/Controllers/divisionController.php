@@ -14,11 +14,11 @@
             return $this->model->see_division();
         }
 
-        public function searchDivison(Request $req) {
-            return $this->model->search_division($req->input('search'), $req->input('cari'));
+        public function searchDivision(Request $req) {
+            return $this->model->search_division($req->input('cari'), $req->input('dir'));
         }
 
-        public function addDvision(Request $req) {
+        public function addDivision(Request $req) {
             return $this->model->add_division($req->input('divisionName'), $req->input('divisiCode'), $req-> input('dirId'));
         }
 

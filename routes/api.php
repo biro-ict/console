@@ -47,7 +47,7 @@ Route::post('/dir/delete', 'App\Http\Controllers\directoryController@deleteDir')
 //Division
 Route::get('/division/all', 'App\Http\Controllers\divisionController@seeDivision');
 Route::post('/division/search', 'App\Http\Controllers\divisionController@searchDivision');
-Route::post('/division/add', 'App\Http\Controllers\divisionController@addDvision');
+Route::post('/division/add', 'App\Http\Controllers\divisionController@addDivision');
 Route::post('/division/update', 'App\Http\Controllers\divisionController@updateDivision');
 Route::post('/division/delete', 'App\Http\Controllers\divisionController@deleteDivision');
 
