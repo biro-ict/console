@@ -51,4 +51,54 @@
         }
     }
 
+    function add_division($divisionName, $divisiCode, $dirId) {
+        $query = "SELECT * FROM divison WHERE divisiCode ='$divisiCode' ";
+        $check = DB::SELECT($query);
+        if(count($check) == 1) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You already have division whom have this code',
+                'title' => 'Duplicate'
+            ]);
+        }else {
+            $query = "INSERT INTO division(divisionName, divisiCode, dirId) VALUES('$divisionName', '$divisiCode', '$dirId')";
+            $insert = DB::SELECT($query);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully add division',
+                'title' => 'Successfully Added'
+            ]);
+        }
+    }
+
+    function update_division($divisionName, $divisiCode, $dirId, $id) {
+        $query = "SELECT * FROM divison WHERE divisiCode ='$divisiCode' ";
+        $check = DB::SELECT($query);
+        if(count($check) == 1) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You already have division whom have this code',
+                'title' => 'Duplicate'
+            ]);
+        }else {
+            $query = "UPDATE division SET divisionName='$divisiCode', divisiCode='$divisiCode', dirId='$dirId' WHERE id=$id)";
+            $insert = DB::SELECT($query);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully update division',
+                'title' => 'Succesfully Updated'
+            ]);
+        }
+    }
+
+    function delete_division($id) {
+        $query = "UPDATE division SET deleted=1, deletedTime=now() WHERE id=$id";
+        $insert = DB::SELECT($query);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Successfully delete division',
+            'title' => 'Succesfully deleted'
+        ]);
+    }
+
 ?>
