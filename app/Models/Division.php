@@ -24,10 +24,29 @@
 
         }
 
+        function see_division_by_id($id) {
+            $get = DB::select('SELECT * FROM division WHERE deleted=0 and id='.$id);
+            if(count($get) == 0) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Sorry, nothing found',
+                    'title' => 'We don\'t have data'
+                ]);
+            }else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Data has been loaded successfully',
+                    'title' => 'We have the data',
+                    'data' => $get
+                ]);
+            }
+
+        }
+
         function search_division($search, $dirs) {
             $where = '';
             if($search != null || $search == '') {
-                $where = "AND (a.divisionName LIKE '%$search%') OR (a.divisiCode LIKE '%$search%')"; 
+                $where = "AND ((a.divisionName LIKE '%$search%') OR (a.divisiCode LIKE '%$search%'))"; 
             }
 
             if($dirs != null || $dirs != '') {
@@ -95,13 +114,16 @@
         }
     
         function delete_division($id) {
-            $query = "UPDATE division SET deleted=1, deletedTime=now() WHERE id=$id";
-            $insert = DB::SELECT($query);
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Successfully delete division',
-                'title' => 'Succesfully deleted'
-            ]);
+            $count = count($id);
+            for($i=0;$i<$count;$i++) {
+                $query = "UPDATE division SET deleted=1, deletedTime=now() WHERE id=$id[$i]";
+                $insert = DB::SELECT($query);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Successfully delete division',
+                    'title' => 'Succesfully deleted'
+                ]); 
+           }
         }
     }
 

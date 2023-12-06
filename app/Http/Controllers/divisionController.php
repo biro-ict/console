@@ -14,6 +14,10 @@
             return $this->model->see_division();
         }
 
+        public function seeDivisionById($id){
+            return $this->model->see_division_by_id($id);
+        }
+
         public function searchDivision(Request $req) {
             return $this->model->search_division($req->input('cari'), $req->input('dir'));
         }
