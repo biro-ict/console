@@ -164,7 +164,7 @@
                     })
                 }else {
                     $('#total-produsen').html(0)
-                    tb = tb + `<tr><td colspan="8" style="text-align: center;"></td></tr>`
+                    tb = tb + `<tr><td colspan="8" style="text-align: center;">${res.message}</td></tr>`
                 }
 
                 $('#tbl-providers').html(tb)
