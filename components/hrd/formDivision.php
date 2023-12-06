@@ -39,6 +39,10 @@ $title  = $id == 0 ? "Buat" : "Ubah";
 </div>
 
 <script type="text/javascript">
+    $('#backto').on('click', function() {
+        location.reload()
+    })
+    
     $(document).ready(function() {
         $.ajax({
             url: url_api + '/dir/search',
@@ -55,6 +59,26 @@ $title  = $id == 0 ? "Buat" : "Ubah";
                 $('#direktorat').html(option)
             }
         })
+
+        var id = `<?php echo $id;?>`;
+        if(id!=0) {
+            $.ajax({
+                url: url_api + '/division/'+id,
+                type: 'get',
+                success: function(res) {
+                    if(res.status=='success') {
+                        var data = res.data
+                        data.forEach(function(items, index) {
+                    
+                            $('#name').val(items.divisionName)
+                            $('#code').val(items.divisiCode)
+                            $('#direktorat').val(items.dirId)
+                            $('#code').attr('readonly', "readonly")
+                        })
+                    }
+                }
+            })
+        }
     })
 
     $('#formDivisions').on('click', function() {

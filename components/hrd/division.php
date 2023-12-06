@@ -120,7 +120,7 @@
             var value = document.querySelector('.checked:checked').value
             var user = `<?php echo $user;?>`;
             $.ajax({
-                url: '../components/kea/formDivision.php',
+                url: '../components/hrd/formDivision.php',
                 type: 'get',
                 data: {user:user, id: value},
                 success: function(res) {
@@ -148,6 +148,7 @@
                 array.push(row)
            })
 
+           console.log(array)
             Swal.fire({
                 title: 'Kamu yakin?',
                 text: 'Data akan terhapus secara permanen',
@@ -162,7 +163,7 @@
                         url: url_api + '/division/delete',
                         type: 'post',
                         data: {
-                            divisiID: array
+                            id: array
                         },
                         success: function(res){
                             Swal.fire(res.title, res.message, res.status)
