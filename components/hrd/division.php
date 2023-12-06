@@ -21,10 +21,9 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <th class="col">#</th>
-                                        <th class="col">Nama</th>
                                         <th class="col">Kode</th>
+                                        <th class="col">Nama</th>
                                         <th class="col">Directory</th>
-                                        <th class="col">Level</th>
                                     </thead>
                                     <tbody id="tbl-division"></tbody>
                                 </table>
@@ -56,9 +55,35 @@
         var dirs = document.getElementById('show-dirs').value
         var tb = ''
         var tbody = document.getElementById('tbl-division')
+
+        $.ajax({
+            url: url_api + '/division/search',
+            type: 'post',
+            data: {
+                cari: cari,
+                dir: dirs 
+            },
+            success: function(res) {
+                if(res.status=='success') {
+                    var data = res.data
+                    data.forEach(function(items, index) {
+                        tb = tb + `<tr>
+                            <td class="col-1"><input type="checkbox" class="form-check-input  checked" value="${items.id}"> </td> 
+                            <td>${items.divisiCode}</td>
+                            <td>${items.divisionName}</td>
+                            <td>${items.dirName}</td>
+                        </tr>`
+                    })
+                }else {
+                    tb = `<tr><td colspan="5" class="text-center">${res.message}, ${res.title}.</td></tr>'`
+                }
+
+                tbody.innerHTML = tb
+            }
+        })
         
-        tb = '<tr><td colspan="5" class="text-center">Sorry, Nothing found</td></tr>'
-        tbody.innerHTML = tb
+       
+        
     }
 
     $('#addDivision').on('click', function() {
@@ -158,7 +183,7 @@
             url: url_api + '/dir/search',
             type: 'post',
             success: function(res) {
-                var option = '<option>Semua Direktorat</option>'
+                var option = '<option value="">Semua Direktorat</option>'
                 if(res.status=='success') {
                     var data = res.data
                     data.forEach(function(items, rows) {
