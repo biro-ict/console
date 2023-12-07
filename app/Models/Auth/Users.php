@@ -7,7 +7,7 @@
 
         function auth_ldap($username, $password = '') {
 
-            $ldap_host   = 'ldap://ldap.bbgemilang.co.id';
+            $ldap_host   = 'ldap://ldap.bbg.co.id';
             $ldap_port   = 389;
             $basedn = 'ou=Users,dc=bbgemilang,dc=co,dc=id';
             $ldap_conn   = ldap_connect($ldap_host, $ldap_port) or die ('Connection to LDAP Server failed');
@@ -46,7 +46,7 @@
 
 
         function auth_console($username) {
-            $get = DB::table('users')->where(array('username'=>$username, 'status' => 'active'))->get();
+            $get = DB::table('users')->where(array('username'=>$username, 'status' => '4'))->get();
             $c   = count($get); 
     
             return response()->json([

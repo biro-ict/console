@@ -69,6 +69,15 @@ Route::post('/depts/update', 'App\Http\Controllers\departmentsController@updateD
 Route::post('/depts/delete', 'App\Http\Controllers\departmentsController@deleteDepts');
 
 
+//grade
+Route::get('/grade/all', 'App\Http\Controllers\gradeController@seeGrade');
+Route::get('/grade/{id}', 'App\Http\Controllers\gradeController@seeById');
+Route::post('/grade/search', 'App\Http\Controllers\gradeController@searchDepts');
+Route::post('/grade/add', 'App\Http\Controllers\gradeController@addGrade');
+Route::post('/grade/update', 'App\Http\Controllers\gradeController@updateGrade');
+Route::post('/grade/delete', 'App\Http\Controllers\gradeController@deleteGrade');
+
+
 //ICT
 //Apps
 Route::get('/apps/all', 'App\Http\Controllers\applicationController@seeApps');
