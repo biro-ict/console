@@ -27,7 +27,7 @@
 
         function search_depts($dirs= 0, $q='') {
             $where = $dirs != 0 ? " AND (a.dirId = $dirs) " : '';
-            $query = "SELECT a.id, a.name, a.code, b.name as dirName FROM department a JOIN directory b ON a.dirId = b.id WHERE ((a.name LIKE '%$q%') or (a.code LIKE '%$q%') or (b.name LIKE '%$q%')) $where order by a.name";
+            $query = "SELECT a.id, a.name, a.code, b.name as dirName, c.divisionName AS divName FROM department a JOIN directory b ON a.dirId = b.id  JOIN division c ON a.divId = c.idWHERE ((a.name LIKE '%$q%') or (a.code LIKE '%$q%') or (b.name LIKE '%$q%') or (c.divisionName LIKE '%$q%'))  $where order by a.name";
             $get = DB::select($query);
             return response()->json([
                 'title' => count($get) > 0 ? 'Berhasil' : 'Gagal',
