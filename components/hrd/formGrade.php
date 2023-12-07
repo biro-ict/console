@@ -40,7 +40,54 @@ $title  = $id == 0 ? "Buat" : "Ubah";
     })
 
     $('#formsGrade').on('click', function() {
+        var id = `<?php echo $id;?>`;
+        let api = id == 0 ? '/grade/add' : '/grade/update'
         
+
+        Swal.fire({
+            title: 'Kamu yakin?',
+            text: 'Kamu akan mengubah data ini',
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Batal',
+            confirmButtonText: '<?php echo  $title;?>',
+            cancelButtonColor: '#d33'
+        }).then((result) => {
+            if(result.isConfirmed) {
+                $.ajax({
+                    url: url_api + api,
+                    type: 'post',
+                    data: {
+                        id: id,
+                        name: $('#name').val(),
+                        code: $('#code').val()
+                    },
+                    success: function(res) {
+                        Swal.fire(res.title, res.message, res.status) 
+                        if(res.status == 'success') setInterval(function(){location.reload()},3000)
+                    }
+                })
+            }else {
+                Swal.fire('Batal', 'Batal mengubah data', 'warning')
+            }
+        })
+    })
+
+    $(document).ready(function() {
+        var id = `<?php echo $id;?>`;
+        if(id != 0) {
+            $.ajax({
+                url: url_api + '/grade/'+ id,
+                type: 'get',
+                success: function(res) {
+                    var data = res.data
+                    data.forEach(function(items, index) {
+                        $('#name').val(items.gradeName)
+                        $('#code').val(items.gradeCode)
+                    })
+                }
+            })
+        }
     })
 
     
