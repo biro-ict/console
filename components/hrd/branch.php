@@ -7,7 +7,7 @@
         <div class="col-lg-12 mb-4 order-0">
             <div class="card">
                 <div class="card-header bg-primary">
-                    <h4 class="text-title text-white">Data Branch</h4>
+                    <h4 class="text-title text-white">Data Cabang</h4>
                 </div>
                 <div class="card-body mt-3">
                     <div class="row">
@@ -25,7 +25,6 @@
                                         <th class="col">Nama</th>
                                         <th class="col">Kode</th>
                                         <th class="col">Organisasi</th>
-                                        <th class="col" colspan="2">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-branch"></tbody>
                                 </table>
@@ -135,13 +134,10 @@
                     data.forEach(function(row, index) {
                         tbody = tbody + `
                             <tr>
-                                <td>${index+1}</td>
+                                <td class="col-1"><input type="checkbox" class="form-check-input  checked" value="${row.id}"> </td>
                                 <td>${row.name}</td>
                                 <td>${row.code}</td>
-                                <td>${row.orgName}</td>
-                                <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data(${row.id})">Ubah</button></td>
-                                <td><button type="button" class="btn btn-sm btn-danger" " onclick="del_data(${row.id})">Hapus</button></td>
-
+                                <td>${row.orgName}</td> 
                             </tr>
                         `
                    })
