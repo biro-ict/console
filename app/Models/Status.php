@@ -1,11 +1,13 @@
-<?php
+<?php 
     namespace App\Models;
     use Illuminate\Database\Eloquent\Model;
     use Illuminate\Support\Facades\DB;
 
-    class Grade extends Model {
-        function see_grade() {
-            $get = DB::SELECT("SELECT * FROM grade WHERE deleted=0");
+    class Status extends Model {
+
+        function see_status() {
+            $get = DB::Select("SELECT * FROM mstatus WHERE deleted=0");
+
             if(count($get) > 0) {
                 return response()->json([
                     'status' => 'success',
@@ -20,10 +22,12 @@
                     'title' => 'Ooops'
                 ]);
             }
+
         }
 
         function see_by_id($id) {
-            $get = DB::SELECT("SELECT * FROM grade WHERE deleted=0 AND id=$id");
+            $get = DB::Select("SELECT * FROM mstatus WHERE deleted=0 AND id=$id");
+
             if(count($get) > 0) {
                 return response()->json([
                     'status' => 'success',
@@ -41,28 +45,29 @@
 
         }
 
-        function add_grade($name, $code) {
-            $check = DB::select("SELECT * FROM grade where gradeCode='$code'");
+        function add_status($name, $code) {
+            $check = DB::select("SELECT * FROM mstatus where statusCode='$code'");
 
             if(count($check) > 0) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'grade with code '.$code.' already exists',
+                    'message' => 'status with code '.$code.' already exists',
                     'title' => 'Duplicate'
                 ]);
-            }else {
+            }else {  
 
-                $insert = DB::Select("INSERT INTO grade(gradeName, gradeCode) VALUES('$name', '$code')");
+                $insert = DB::Select("INSERT INTO mstatus(statusName, statusCode) VALUES('$name', '$code')");
                 return response()->json([
                     'status' => 'success',
                     'message' => 'successfully add data',
                     'title' => 'Yeah!'
                 ]);
             }
+
         }
 
-        function update_grade($id, $name, $code) {
-            $update = DB::Select("UPDATE grade SET gradeName='$name', gradeCode='$code' WHERE id=$id");
+        function update_status($id, $name, $code) {
+            $update = DB::Select("UPDATE mstatus SET statusName='$name', statusCode='$code' WHERE id=$id");
             return response()->json([
                 'status' => 'success',
                 'message' => 'successfully update data',
@@ -71,11 +76,11 @@
       
         }
 
-        function delete_grade($id) {
+        function delete_status($id) {
             $total = count($id);
 
             for($i=0; $i<$total; $i++) {
-                $delete = DB::SELECT("UPDATE grade set deleted=1, deletedTime=now() FROM grade WHERE id='$id[$i]'");
+                $delete = DB::SELECT("UPDATE mstatus SET deleted=1, deletedTime=now() WHERE id='$id[$i]'");
             }
 
             return response()->json([
@@ -85,6 +90,3 @@
             ]);
         }
     }
-
-
-?>

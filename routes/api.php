@@ -77,6 +77,15 @@ Route::post('/grade/add', 'App\Http\Controllers\gradeController@addGrade');
 Route::post('/grade/update', 'App\Http\Controllers\gradeController@updateGrade');
 Route::post('/grade/delete', 'App\Http\Controllers\gradeController@deleteGrade');
 
+// employee status
+//status
+Route::get('/status/all', 'App\Http\Controllers\statusController@seeStatus');
+Route::get('/status/{id}', 'App\Http\Controllers\statusController@seeById');
+Route::post('/status/search', 'App\Http\Controllers\statusController@searchDepts');
+Route::post('/status/add', 'App\Http\Controllers\statusController@addStatus');
+Route::post('/status/update', 'App\Http\Controllers\statusController@updateStatus');
+Route::post('/status/delete', 'App\Http\Controllers\statusController@deleteStatus');
+
 
 //ICT
 //Apps
