@@ -9,9 +9,9 @@
                 <div class="card-header bg-primary">
                     <h4 class="text-title text-white">Data Direktorat</h4>
                 </div>
-                <div class="card-body mt-3">
+                <main class="card-body mt-3">
                     <div class="row">
-                    <div class="col-auto">
+                        <div class="col-auto">
                             <select class="form-select form-select-sm" id="show-orgz"></select>
                         </div>
                         <div class="col-auto">
@@ -19,27 +19,30 @@
                         </div>
                         
                         <div class="col-md-12">
-                            <div class="table-responsive" style="height: 400px">
+                            <article class="table-responsive" style="height: 400px">
+                            <caption class="text-muted text-center">Total: <span id="total">0</span></caption>
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <th class="col">#</th>
                                         <th class="col">Nama</th>
                                         <th class="col">Kode</th>
                                         <th class="col">Organisasi</th>
-                                        <th class="col" colspan="2">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-dirs"></tbody>
                                 </table>
-                            </div>
+                            </article>
                         </div>
                         
                     </div>
-                </div>
+                </main>
                 
-                <div class="card-footer mt-3">
+                <footer class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addDirs">Tambah</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="backto">Kembali</button>
-                </div>
+                    <button type="button" class="btn btn-info btn-sm" id="updateDirs">Ubah</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="deleteDirs">Hapus</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
+                    <button type="button" class="btn btn-success btn-sm" id="exportDirs">Export to Excel</button>
+                </footer>
             </div>
         </div>
     </div>
@@ -62,49 +65,92 @@
         })
     })
 
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/hrd/formDirs.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
+    $('#exportDirs').on('click', function() {
+        Swal.fire('Oooops', 'Feature ini masih dalam maintenane', 'warning')
+    })
 
-    function del_data(id) {
-        Swal.fire({
-            title: 'Kamu yakin?',
-            text: 'Kamu akan menghapus data ini secara permanen',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#0275d8',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) =>  {
-            if(result.value) {
-                $.ajax({
-                    url: url_api + '/dir/delete',
-                    type: 'post',
-                    data: {
-                        id: id
-                    },
-                    success: function(res) {
-                        Swal.fire(res.title, res.message, res.status)
-                        if(res.status == 'success') location.reload()
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                       if(xhr.status == 500) Swal.fire('Ooops', 'Sepertinya data yang kamu ingin hapus merupakan data primary. Silahkan cek kembali sebelum menghapus data ini. ', 'error')
-                    }
-                })
-            }else{
-                Swal.fire('Batal', 'Data batal dihapus', 'error')
-            }
-        })
-    }
+    $('#updateDirs').on('click', function() {
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
+
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih direktorat terlebih dahulu',
+                'warning'
+            )
+        }else if(totals > 1){
+            Swal.fire(
+                'Peringatan',
+                'Harap pilih hanya satu direktorat',
+                'warning'
+            )
+        }else{
+            var value = document.querySelector('.checked:checked').value
+            var user = `<?php echo $user;?>`;
+            $.ajax({
+                url: '../components/hrd/formDirs.php',
+                type: 'get',
+                data: {user:user, id: value},
+                success: function(res) {
+                    $('#content-user').html(res)
+                }
+            })
+        }
+    })
+
+    $('#deleteDirs').on('click', function() {
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
+
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih direktorat terlebih dahulu',
+                'warning'
+            )
+        }else {
+            $('#tbl-dirs input[type=checkbox]:checked').each(function() {
+                var row = $(this).val()
+                array.push(row)
+           })
+
+           console.log(array)
+            Swal.fire({
+                title: 'Kamu yakin?',
+                text: 'Data akan terhapus secara permanen',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Batal',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    $.ajax({
+                        url: url_api + '/dir/delete',
+                        type: 'post',
+                        data: {
+                            id: array
+                        },
+                        success: function(res){
+                            Swal.fire(res.title, res.message, res.status)
+                            if(res.status == 'success') show_table(0, '')
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            if(xhr.status == 500) Swal.fire('Ooops', 'Sepertinya data yang kamu ingin hapus merupakan data primary. Silahkan cek kembali sebelum menghapus data ini. ', 'error')
+                        }
+                    })
+                }else{
+                    Swal.fire('Batal', 'Data batal hapus', 'warning')
+                }
+            })
+        }
+    })
+
 
     $('#cari').on('keyup', function() {
         var query = $(this).val()
@@ -119,6 +165,7 @@
     })
 
     function show_table(orgz, query) {
+        var total = 0
         var tbody = ''
         $.ajax({
             url: url_api + '/dir/search',
@@ -128,18 +175,17 @@
                 query: query
             },
             success: function(res) {
+                total = res.data == undefined ? 0 : res.data.length
                 if(res.status == 'success') {
                     
                     var data = res.data
                     data.forEach(function(row, index) {
                         tbody = tbody + `
                             <tr>
-                                <td>${index+1}</td>
+                                <td class="col-1"><input type="checkbox" class="form-check-input  checked" value="${row.id}"> </td>
                                 <td>${row.name}</td>
                                 <td>${row.code}</td>
                                 <td>${row.orgName}</td>
-                                <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data(${row.id})">Ubah</button></td>
-                                <td><button type="button" class="btn btn-sm btn-danger" " onclick="del_data(${row.id})">Hapus</button></td>
 
                             </tr>
                         `
@@ -148,6 +194,7 @@
                     tbody = '<tr><td colspan="8" class="text-center">Data tidak ditemukan</td></tr>'
                 }
 
+                $('#total').text(total)
                 $('#tbl-dirs').html(tbody)
                 
             }
