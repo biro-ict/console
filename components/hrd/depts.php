@@ -1,6 +1,4 @@
-<?php 
-    $user = isset($_GET['user']) ? $_GET['user'] : '';
-?>
+<?php  $user = isset($_GET['user']) ? $_GET['user'] : '';?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="row">
@@ -9,7 +7,7 @@
                 <div class="card-header bg-primary">
                     <h4 class="text-title text-white">Data Departemen</h4>
                 </div>
-                <div class="card-body mt-3">
+                <main class="card-body mt-3">
                     <div class="row">
                         <div class="col-auto">
                             <select class="form-select form-select-sm" id="show-dirs"></select>
@@ -18,7 +16,8 @@
                             <input type="text" class="form-control form-control-sm" placeholder="Cari Berdasarkan Nama atau Kode" id="cari">
                         </div>
                         <div class="col-md-12">
-                            <div class="table-responsive" style="height: 400px">
+                            <caption class="text-muted">Total: <span id="total">0</span></caption>
+                            <article class="table-responsive" style="height: 400px">
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <th class="col">#</th>
@@ -29,17 +28,18 @@
                                     </thead>
                                     <tbody id="tbl-depts"></tbody>
                                 </table>
-                            </div>
+                            </article>
                         </div>
                         
                     </div>
-                </div>
+                </main>
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addDepts">Tambah</button>
                     <button type="button" class="btn btn-info btn-sm" id="updateDeps">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteDepts">Hapus</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="backto">Kembali</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
+                    <button type="button" class="btn btn-success btn-sm" id="exportDepts">Export To Excel</button>
                 </div>
             </div>
         </div>
@@ -47,6 +47,10 @@
 </div>
 
 <script type="text/javascript">
+    $('#exportDepts').on('click', function() {
+        Swal.fire('Oooops', 'Feature ini masih dalam tahap maintenance', 'warning')
+    })
+
     $('#backto').on('click', function() {
         location.href = 'index.php'
     })
@@ -95,37 +99,58 @@
         }
     })
 
-    function del_data(id) {
-        Swal.fire({
-            title: 'Kamu yakin?',
-            text: 'Kamu akan menghapus data ini secara permanen',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#0275d8',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) =>  {
-            if(result.value) {
-                $.ajax({
-                    url: url_api + '/depts/delete',
-                    type: 'post',
-                    data: {
-                        id: id
-                    },
-                    success: function(res) {
-                        Swal.fire(res.title, res.message, res.status)
-                        if(res.status == 'success') location.reload()
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                       if(xhr.status == 500) Swal.fire('Ooops', 'Sepertinya data yang kamu ingin hapus merupakan data primary. Silahkan cek kembali sebelum menghapus data ini. ', 'error')
-                    }
-                })
-            }else{
-                Swal.fire('Batal', 'Data batal dihapus', 'error')
-            }
-        })
-    }
+
+    $('#deleteDepts').on('click', function() {
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
+
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih direktorat terlebih dahulu',
+                'warning'
+            )
+        }else {
+            $('#tbl-depts input[type=checkbox]:checked').each(function() {
+                var row = $(this).val()
+                array.push(row)
+           })
+
+           
+            Swal.fire({
+                title: 'Kamu yakin?',
+                text: 'Data akan terhapus secara permanen',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Batal',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    $.ajax({
+                        url: url_api + '/depts/delete',
+                        type: 'post',
+                        data: {
+                            id: array
+                        },
+                        success: function(res){
+                            Swal.fire(res.title, res.message, res.status)
+                            if(res.status == 'success') show_table(0, '')
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            if(xhr.status == 500) Swal.fire('Ooops', 'Sepertinya data yang kamu ingin hapus merupakan data primary. Silahkan cek kembali sebelum menghapus data ini. ', 'error')
+                        }
+                    })
+                }else{
+                    Swal.fire('Batal', 'Data batal hapus', 'warning')
+                }
+            })
+        }
+    })
+
+ 
 
     $('#cari').on('keyup', function() {
         var query = $(this).val()
@@ -140,6 +165,7 @@
     })
 
     function show_table(dirs, query) {
+        var total = 0
         var tbody = ''
         $.ajax({
             url: url_api + '/depts/search',
@@ -149,6 +175,7 @@
                 query: query
             },
             success: function(res) {
+                total = res.data ==  undefined ? 0 : res.data.length
                 if(res.status == 'success') {
                     
                     var data = res.data
@@ -159,14 +186,14 @@
                                 <td>${row.name}</td>
                                 <td>${row.code}</td>
                                 <td>${row.dirName}</td>
-                                <td></td>
+                                <td>${row.divName}</td>
                             </tr>
                         `
                    })
                 }else {
                     tbody = '<tr><td colspan="8" class="text-center">Data tidak ditemukan</td></tr>'
                 }
-
+                $('#total').text(total)
                 $('#tbl-depts').html(tbody)
                 
             }

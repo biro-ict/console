@@ -119,7 +119,6 @@
                 array.push(row)
            })
 
-           console.log(array)
             Swal.fire({
                 title: 'Kamu yakin?',
                 text: 'Data akan terhapus secara permanen',
