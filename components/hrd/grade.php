@@ -63,7 +63,27 @@
     })
 
     function show_tables() {
+        $.ajax({
+            url: url_api + '/grade/all',
+            type: 'get',
+            success: function(res) {
+                var tb = ''
+                if(res.status == 'success') {
+                    var data = res.data
+                    data.forEach(function(items, index) {
+                        var tb = tb + `<tr>
+                            <td class="col-1"><input type="checkbox" class="form-check-input  checked" value="${items.id}"> </td>
+                            <td>${items.gradeCode}</td>
+                            <td>${items.gradeName}</td>
+                        </tr>`
+                    })
+                }else {
+                    tb = `<tr><td colspan="3" class="text-center">${res.message}</td></tr>`
+                }
 
+                $('#tbl-grade').html(tb)
+            }
+        })
     }
 
     $(document).ready(function() {

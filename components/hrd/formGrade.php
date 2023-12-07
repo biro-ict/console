@@ -26,7 +26,7 @@ $title  = $id == 0 ? "Buat" : "Ubah";
                 </main>
 
                 <div class="card-footer mt-3">
-                    <button type="button" class="btn btn-sm btn-success" id="formDivisions"><?php echo $title;?></button>
+                    <button type="button" class="btn btn-sm btn-success" id="formsGrade"><?php echo $title;?></button>
                     <button class="btn btn-danger btn-sm" id="backto">Kembali</button>
                 </div>
             </div>
@@ -38,4 +38,10 @@ $title  = $id == 0 ? "Buat" : "Ubah";
     $('#backto').on('click', function () {
         location.reload()
     })
+
+    $('#formsGrade').on('click', function() {
+        
+    })
+
+    
 </script>
