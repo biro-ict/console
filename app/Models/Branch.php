@@ -31,7 +31,7 @@
             if($orgz != 0) {
                 $where = "AND (a.orgId = $orgz)";
             }
-            $query = "SELECT a.id, a.name, a.code, b.name as orgName FROM branch a JOIN organizations b ON a.orgId = b.id WHERE ((a.name LIKE '%$q%') or (a.code LIKE '%$q%') or (b.name LIKE '%$q%')) $where order by a.name";
+            $query = "SELECT a.id, a.name, a.code, b.name as orgName FROM branch a JOIN organizations b ON a.orgId = b.id WHERE a.deleted=0 AND ((a.name LIKE '%$q%') or (a.code LIKE '%$q%') or (b.name LIKE '%$q%')) $where order by a.name";
             $get = DB::select($query);
             return response()->json([
                 'status' => count($get) > 0 ? 'success' : 'error',
@@ -77,7 +77,10 @@
         }
         
         function delete_branch($id) {
-            $delete = DB::table('branch')->delete($id);
+            $count = count($id);
+            for($i=0; $i<$count;$i++) {
+                $delete = DB::select('UPDATE branch SET deleted=1, deletedTime=now() WHERE id='.$id[$i]);
+            }
             return response()->json([
                 'status' => 'success',
                 'title' => 'Berhasil',
