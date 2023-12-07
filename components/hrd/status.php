@@ -19,7 +19,7 @@
                                         <th class="col">Kode</th>
                                         <th class="col">Nama</th>
                                     </thead>
-                                    <tbody id="tbl-grade"></tbody>
+                                    <tbody id="tbl-status"></tbody>
                                 </table>
                             </div>
                         </content>
@@ -43,20 +43,119 @@
     })
 
     $('#addStatus').on('click', function() {
-
+        var user = `<?php echo $user;?>`;
+        $.ajax({
+            url: '../components/hrd/formStatus.php',
+            type: 'get',
+            data: {user: user},
+            success: function(res) {
+                $('#content-user').html(res)
+            }
+        })
     })
 
     $('#updateStatus').on('click', function() {
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
 
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih Status terlebih dahulu',
+                'warning'
+            )
+        }else if(totals > 1){
+            Swal.fire(
+                'Peringatan',
+                'Harap pilih hanya satu status',
+                'warning'
+            )
+        }else{
+            var value = document.querySelector('.checked:checked').value
+            var user = `<?php echo $user;?>`;
+            $.ajax({
+                url: '../components/hrd/formStatus.php',
+                type: 'get',
+                data: {user:user, id: value},
+                success: function(res) {
+                    $('#content-user').html(res)
+                }
+            })
+        }
     })
 
     $('#deleteStatus').on('click', function() {
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
 
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih Status terlebih dahulu',
+                'warning'
+            )
+        }else {
+            $('#tbl-status input[type=checkbox]:checked').each(function() {
+                var row = $(this).val()
+                array.push(row)
+           })
+
+           console.log(array)
+            Swal.fire({
+                title: 'Kamu yakin?',
+                text: 'Data akan terhapus secara permanen',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Batal',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    $.ajax({
+                        url: url_api + '/status/delete',
+                        type: 'post',
+                        data: {
+                            id: array
+                        },
+                        success: function(res){
+                            Swal.fire(res.title, res.message, res.status)
+                            if(res.status == 'success') show_tables()
+                        }
+                    })
+                }else{
+                    Swal.fire('Batal', 'Data batal hapus', 'warning')
+                }
+            })
+        }
 
     })
 
     function show_tables() {
+        $.ajax({
+            url: url_api + '/status/all',
+            type: 'get',
+            success: function(res) {
+                var tb = ''
+                if(res.status == 'success') {
+                    var data = res.data
+                    data.forEach(function(items, index) {
+                        tb = tb + `<tr>
+                            <td class="col-1"><input type="checkbox" class="form-check-input  checked" value="${items.id}"> </td>
+                            <td>${items.statusCode}</td>
+                            <td>${items.statusName}</td>
+                        </tr>`
+                    })
+                }else {
+                    tb = `<tr><td colspan="3" class="text-center">${res.message}</td></tr>`
+                }
 
+                $('#tbl-status').html(tb)
+            }
+        })
     } 
 
     $(document).ready(function() {
