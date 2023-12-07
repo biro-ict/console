@@ -23,7 +23,7 @@
         }
 
         public function updateGrade(Request $req) {
-            return $this->model->add_grade(
+            return $this->model->update_grade(
                 $req->input('id'), 
                 $req->input('name'), 
                 $req->input('code'));

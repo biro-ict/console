@@ -62,23 +62,15 @@
         }
 
         function update_grade($id, $name, $code) {
-            $check = DB::select("SELECT * FROM grade where gradeCode='$code'");
-
-            if(count($check) > 0) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'grade with code '.$code.' already exists',
-                    'title' => 'Duplicate'
-                ]);
-            }else {
-
-                $insert = DB::Select("UPDATE grade SET gradeName='$name', gradeCode='$code' WHERE id=$id");
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'successfully add data',
-                    'title' => 'Yeah!'
-                ]);
-            }
+         
+       
+            $update = DB::Select("UPDATE grade SET gradeName='$name', gradeCode='$code' WHERE id=$id");
+            return response()->json([
+                'status' => 'success',
+                'message' => 'successfully update data',
+                'title' => 'Yeah!'
+            ]);
+      
         }
 
         function delete_grade($id) {
