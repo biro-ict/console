@@ -26,7 +26,7 @@
         }
 
         function search_orgz($q) { 
-            $query = "SELECT * FROM organizations where (name LIKE '%$q%') or (code LIKE '%$q%') or (address_one LIKE '%$q%') or (address_two LIKE '%$q%') or (telp LIKE '%$q%') ORDER BY name";
+            $query = "SELECT * FROM organizations where deleted=0 AND ((name LIKE '%$q%') or (code LIKE '%$q%') or (address_one LIKE '%$q%') or (address_two LIKE '%$q%') or (telp LIKE '%$q%')) ORDER BY name";
             $get = DB::select($query);
           
             return response()->json([
@@ -74,7 +74,11 @@
         }
 
         function delete_orgz($id) {
-            $delete = DB::table('organizations')->delete($id);
+            $count = count($id);
+
+            for($i=0; $i<$count;$i++) {
+                $delete = DB::select("UPDATE organizations SET deleted=1, deletedTime=now() WHERE id=$id[$i]");
+            }
             return response()->json([
                 'status' => 'success',
                 'title' => 'Berhasil',
