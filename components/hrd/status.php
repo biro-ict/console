@@ -39,7 +39,7 @@
 
 <script type="text/javascript">
     $('#backto').on('click', function() {
-        location.history.go(-1)
+        window.location.go(-1)
     })
 
     $('#addStatus').on('click', function() {
