@@ -9,16 +9,17 @@
                 <div class="card-header bg-primary">
                     <h4 class="text-title text-white">Data Cabang</h4>
                 </div>
-                <div class="card-body mt-3">
+                <main class="card-body mt-3">
                     <div class="row">
-                    <div class="col-auto">
+                        <div class="col-md-6">
                             <select class="form-select form-select-sm" id="show-orgz"></select>
                         </div>
                         <div class="col-auto">
                             <input type="text" class="form-control form-control-sm" placeholder="Cari" id="cari">
                         </div>
-                        <div class="col-md-12">
-                            <div class="table-responsive" style="height: 400px">
+                        <div class="col-md-12 mb-3">
+                            <caption class="text-muted small-text">Total Cabang: <span id="total">0</span></caption>
+                            <article class="table-responsive" style="height: 400px">
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <th class="col">#</th>
@@ -28,15 +29,18 @@
                                     </thead>
                                     <tbody id="tbl-branch"></tbody>
                                 </table>
-                            </div>
+                            </article>
                         </div>
                         
                     </div>
-                </div>
+                </main>
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addBranch">Tambah</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="backto">Kembali</button>
+                    <button type="button" class="btn btn-info btn-sm" id="updateBranch">Ubah</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="deleteBranch">Hapus</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
+                    <button type="button" class="btn btn-success btn-sm" id="exportBranch">Export to Excel</button>
                 </div>
             </div>
         </div>
@@ -47,6 +51,11 @@
     $('#backto').on('click', function() {
         location.href = 'index.php'
     })
+
+    $('#exportBranch').on('click', function() {
+        Swal.fire('Ooops', 'Feature ini masih dalam tahap pengembangan', 'warning')
+    })
+
 
     $('#addBranch').on('click', function() {
         var user = `<?php echo $user;?>`;
@@ -60,49 +69,85 @@
         })
     })
 
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/hrd/formBranch.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
+    $('#updateBranch').on('click', function() {
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
 
-    function del_data(id) {
-        Swal.fire({
-            title: 'Kamu yakin?',
-            text: 'Kamu akan menghapus data ini secara permanen',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#0275d8',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) =>  {
-            if(result.value) {
-                $.ajax({
-                    url: url_api + '/branch/delete',
-                    type: 'post',
-                    data: {
-                        id: id
-                    },
-                    success: function(res) {
-                        Swal.fire(res.title, res.message, res.status)
-                        if(res.status == 'success') location.reload()
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                       if(xhr.status == 500) Swal.fire('Ooops', 'Sepertinya data yang kamu ingin hapus merupakan data primary. Silahkan cek kembali sebelum menghapus data ini. ', 'error')
-                    }
-                })
-            }else{
-                Swal.fire('Batal', 'Data batal dihapus', 'error')
-            }
-        })
-    }
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih cabang terlebih dahulu',
+                'warning'
+            )
+        }else if(totals > 1){
+            Swal.fire(
+                'Peringatan',
+                'Harap pilih hanya satu cabang',
+                'warning'
+            )
+        }else{
+            var value = document.querySelector('.checked:checked').value
+            var user = `<?php echo $user;?>`;
+            $.ajax({
+                url: '../components/hrd/formBranch.php',
+                type: 'get',
+                data: {user:user, id: value},
+                success: function(res) {
+                    $('#content-user').html(res)
+                }
+            })
+        }
+    })
+
+    $('#deleteBranch').on('click', function() {
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
+
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih cabang terlebih dahulu',
+                'warning'
+            )
+        }else {
+            $('#tbl-branch input[type=checkbox]:checked').each(function() {
+                var row = $(this).val()
+                array.push(row)
+           })
+
+           console.log(array)
+            Swal.fire({
+                title: 'Kamu yakin?',
+                text: 'Data akan terhapus secara permanen',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Batal',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    $.ajax({
+                        url: url_api + '/branch/delete',
+                        type: 'post',
+                        data: {
+                            id: array
+                        },
+                        success: function(res){
+                            Swal.fire(res.title, res.message, res.status)
+                            if(res.status == 'success') show_table(0, '')
+                        }
+                    })
+                }else{
+                    Swal.fire('Batal', 'Data batal hapus', 'warning')
+                }
+            })
+        }
+    })
+
 
     $('#cari').on('keyup', function() {
         var query = $(this).val()
@@ -119,6 +164,7 @@
     function show_table(orgz, query) {
         var tbody = ''
         var orgz = $('#show-orgz').val()
+        var total = 0
         $.ajax({
             url: url_api + '/branch/search',
             type: 'post',
@@ -127,7 +173,7 @@
                 query: query
             },
             success: function(res) {
-                console.log(res)
+                total = res.data == undefined ? total : res.data.length
                 if(res.status == 'success') {
                     
                     var data = res.data
@@ -142,9 +188,10 @@
                         `
                    })
                 }else {
-                    tbody = '<tr><td colspan="8" class="text-center">Data tidak ditemukan</td></tr>'
+                    tbody = '<tr><td colspan="4" class="text-center">Data tidak ditemukan</td></tr>'
                 }
 
+                $('#total').text(total)
                 $('#tbl-branch').html(tbody)
                 
             }
@@ -170,12 +217,7 @@
                     opt = '<option>Data kosong</option>'
                 }
                 $('#show-orgz').html(opt)
-
             }
         })
-        
     })
-
-
-
 </script>

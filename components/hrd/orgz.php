@@ -50,7 +50,7 @@
     })
 
     $('#downloadOrgz').on('click', function() {
-        Swal.fire('Ooops', 'Feature ini masih dalam tahap pengembangan')
+        Swal.fire('Ooops', 'Feature ini masih dalam tahap pengembangan', 'warning')
     })
 
     $('#addOrgz').on('click', function() {
