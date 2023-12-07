@@ -29,7 +29,7 @@
         function search_dir($orgz = 0, $q = "") {
             $where = $orgz == 0 ? '' : " AND (a.orgId = $orgz)";
             
-            $query = "SELECT a.id, a.name, a.code, b.name as orgName FROM directory a JOIN organizations b ON a.orgId = b.id where ((a.name LIKE '%q%') or (a.code LIKE '%$q%') or (b.name LIKE '%$q%')) $where ORDER BY a.name";
+            $query = "SELECT a.id, a.name, a.code, b.name as orgName FROM directory a JOIN organizations b ON a.orgId = b.id where a.deleted=0 AND ((a.name LIKE '%q%') or (a.code LIKE '%$q%') or (b.name LIKE '%$q%')) $where ORDER BY a.name";
             $get = DB::select($query);
             return response()->json([
                 'title' => count($get) > 0 ? 'Berhasil' : 'Gagal',
@@ -80,7 +80,11 @@
         }
 
         function delete_dir($id) {
-            $delete = DB::table('directory')->delete($id);
+
+            $count = count($id);
+            for($i=0; $i<$count; $i++) {
+                $delete = DB::Select("UPDATE directory SET deleted=1, deletedTime=now() WHERE id=$id[$i]");
+            }
             return response()->json([
                 'status' => 'success',
                 'message' => 'Berhasil menghapus data direktori',
