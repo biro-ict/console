@@ -24,6 +24,20 @@
 
         function see_by_id($id) {
             $get = DB::SELECT("SELECT * FROM grade WHERE deleted=0 AND id=$id");
+            if(count($get) > 0) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Successfully get data',
+                    'title' => 'Berhasil',
+                    'data' => $get
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Sorry, grade not found',
+                    'title' => 'Ooops'
+                ]);
+            }
 
         }
 
