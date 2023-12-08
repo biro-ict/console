@@ -5,14 +5,14 @@
 
 <li class="menu-item">
     <a href="index.php" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-home-circle"></i>
+        <i class="menu-icon tf-icons bx bxs-dashboard"></i>
         <div data-i18n="Analytics">Beranda</div>
     </a>
 </li>
 
 <li class="menu-item">
     <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+        <i class="menu-icon tf-icons bx bxs-detail"></i>
         <div data-i18n="Account Settings">General</div>
     </a>
     <ul class="menu-sub">
@@ -34,11 +34,40 @@
     </ul>
 </li>
 
+<li class="menu-item">
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bxs-inbox"></i>
+        <div data-i18n="Account Settings">Tiket Saya</div>
+    </a>
+    <ul class="menu-sub">
+        <li class="menu-item">
+            <a href="data.php?id=personal" class="menu-link">
+                <div data-i18n="Account"><small>Tiket Masuk</small></div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="data.php?id=bpjs" class="menu-link">
+                <div data-i18n="Notifications"><small>Tiket Keluar</small></div>
+            </a>
+        </li>  
+        <li class="menu-item">
+            <a href="data.php?id=apps" class="menu-link">
+                <div data-i18n="Notifications"><small>Status Tiket</small></div>
+            </a>
+        </li>  
+        <li class="menu-item">
+            <a href="data.php?id=apps" class="menu-link">
+                <div data-i18n="Notifications"><small>Log Tiket</small></div>
+            </a>
+        </li>  
+    </ul>
+</li>
+
 
 <?php if($path == 'hrd') { ?>
 <li class="menu-item">
     <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+        <i class="menu-icon tf-icons bx bxs-user-account"></i>
         <div data-i18n="Account Settings">Menu HR</div>
     </a>
     <ul class="menu-sub">
@@ -89,7 +118,7 @@
 <?php if($path == 'ict') { ?>
 <li class="menu-item">
     <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+        <i class="menu-icon tf-icons bx bxs-devices"></i>
         <div data-i18n="Account Settings">Menu ICT</div>
     </a>
     <ul class="menu-sub">
@@ -132,7 +161,7 @@
 <?php if($path == 'kea') { ?>
 <li class="menu-item">
     <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+        <i class="menu-icon tf-icons bx bx-money"></i>
         <div data-i18n="Account Settings">Menu Keuangan</div>
     </a>
     <ul class="menu-sub">
@@ -204,7 +233,7 @@
 <?php if($path == 'prc') { ?>
 <li class="menu-item">
     <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-dock-top"></i>
+        <i class="menu-icon tf-icons bx bx-cart"></i>
         <div data-i18n="Account Settings">Menu Procurement</div>
     </a>
     <ul class="menu-sub">
