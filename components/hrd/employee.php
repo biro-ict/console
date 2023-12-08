@@ -23,18 +23,18 @@
                         <div class="col-md-12 mb-3">
                             <div class="table-responsive" style="height: 400px">
                                 <table class="table table-striped table-hover">
-                                    <thead>
+                                    <thead style="background: white; position: sticky; top: 0;box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);">
                                         <th class="col">#</th>
                                         <th class="col">Nama</th>
                                         <th class="col">Username</th>
                                         <th class="col">Gender</th>
                                         <th class="col">Level</th>
                                         <th class="col">Departemen</th>
-                                        <th class="col">Branch</th>
+                                        <th class="col">Cabang</th>
                                         <th class="col">Status</th>
-                                        <th class="col" colspan="3">Aksi</th>
+                                        <th class="col">Grade</th>
                                     </thead>
-                                    <tbody id="tbl-dirs"></tbody>
+                                    <tbody id="tbl-empl"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -43,8 +43,10 @@
                 </div>
                 
                 <div class="card-footer mt-3">
-                    <button type="button" class="btn btn-primary btn-sm" id="addDepts">Tambah</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="backto">Kembali</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="addDivision">Tambah</button>
+                    <button type="button" class="btn btn-info btn-sm" id="updateDivision">Ubah</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="deleteDivision">Hapus</button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
             </div>
         </div>
@@ -150,34 +152,29 @@
                     data.forEach(function(row, index) {
                         tbody = tbody + `
                             <tr>
-                                <td>${index+1}</td>
+                                <td class="col-1"><input type="checkbox" class="form-check-input  checked" value="${row.id}"> </td> 
                                 <td>${row.fullname}</td>
                                 <td>${row.username}</td>
                                 <td>${row.gender}</td>
                                 <td>${row.level}</td>
                                 <td>${row.deptName}</td>
                                 <td>${row.branchName}</td>
-                                <td>${row.status}</td>
-                                <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data(${row.id})">Ubah</button></td>
-                                <td><button type="button" class="btn btn-sm btn-success" onclick="data_bpjs()"> BPJS</button></td>
-                                <td><button type="button" class="btn btn-sm btn-danger" " onclick="del_data(${row.id})">Hapus</button></td>
+                                <td>${row.statusName}</td>
+                                <td>${row.grade}</td>
 
                             </tr>
                         `
                    })
                 }else {
-                    tbody = '<tr><td colspan="8" class="text-center">Data tidak ditemukan</td></tr>'
+                    tbody = `<tr><td colspan="9" class="text-center">${res.message}</td></tr>`
                 }
 
-                $('#tbl-dirs').html(tbody)
+                $('#tbl-empl').html(tbody)
                 
             }
         })
     }
 
-    function data_bpjs() {
-        Swal.fire('Maintenance', 'Module ini sedang dalam tahap pengembangan', 'warning')
-    }
 
     $(document).ready(function() {
         var query = $('#cari').val()
@@ -190,13 +187,13 @@
             success: function(res) {
                 var opt = ''
                 if(res.status == 'success') {
-                    opt = '<option value="0">All Branches</option>'
+                    opt = '<option value="0">Semua Cabang</option>'
                     var data = res.data
                     data.forEach(function(row, index) {
                         opt = opt + `<option value="${row.id}">${row.name}</option>`
                     })
                 }else {
-                    opt = "<option>Tidak ada branch</option>"
+                    opt = `<option>${res.message}</option>`
                 }
 
                 $('#show-branch').html(opt)
@@ -209,13 +206,13 @@
             success: function(res) {
                 var opt = ''
                 if(res.status == 'success') {
-                    opt = '<option value="0">All Depts</option>'
+                    opt = '<option value="0">Semua Departemen</option>'
                     var data = res.data
                     data.forEach(function(row, index) {
                         opt = opt + `<option value="${row.id}">${row.name}</option>`
                     })
                 }else {
-                    opt = "<option>Tidak ada depts</option>"
+                    opt = `<option>${res.message}</option>`
                 }
 
                 $('#show-depts').html(opt)
