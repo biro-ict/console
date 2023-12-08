@@ -39,6 +39,14 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                             <label>Branch:</label>
                             <select class="form-select form-select-sm" id="branch"> </select>
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Grade: </label>
+                            <select class="form-select form-select-sm" id="grade"> </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Status:</label>
+                            <select class="form-select form-select-sm" id="status"> </select>
+                        </div>
                     </div>
                 </div>
 
@@ -61,6 +69,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
         var id = `<?php echo $id;?>`;
         var opt_dept='';
         var opt_branch='';
+        var opt_grade='';
+        var opt_status='';
         $.ajax({
             url: url_api + '/depts/all',
             type: 'get',
@@ -71,10 +81,45 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                         opt_dept = opt_dept + `<option value="${row.id}">${row.name}</option>`
                     })
                 }else{
-                    opt_dept = '<option>Tidak ada data</option>'
+                    opt_dept = `<option>${res.message}</option>`
                 }
 
                 $('#department').html(opt_dept)
+            }
+        })
+
+        $.ajax({
+            url: url_api + '/grade/all',
+            type: 'get',
+            success: function(res) {
+                if(res.status == 'success') {
+                    var data = res.data
+                    data.forEach(function(row, index) {
+                        opt_grade = opt_grade + `<option value="${row.id}">(${row.gradeCode} - ${row.gradeName})</option>`
+                    })
+                }else{
+                    opt_grade = '<option>Tidak ada data</option>'
+                }
+
+                $('#grade').html(opt_grade)
+            }
+        })
+
+
+        $.ajax({
+            url: url_api + '/status/all',
+            type: 'get',
+            success: function(res) {
+                if(res.status == 'success') {
+                    var data = res.data
+                    data.forEach(function(row, index) {
+                        opt_status = opt_status + `<option value="${row.id}">${row.statusName}</option>`
+                    })
+                }else{
+                    opt_status = '<option>Tidak ada data</option>'
+                }
+
+                $('#status').html(opt_status)
             }
         })
 
@@ -108,6 +153,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                         $('#level').val(row.level)
                         $('#department').val(row.deptId)
                         $('#branch').val(row.branchid)
+                        $('#grade').val(row.gradeId)
+                        $('#status').val(row.status)
                     })
                 }
             }
@@ -117,9 +164,7 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
     $('#formEmpl').on('click', function() {
         var formdata = new FormData()
         var id = `<?php echo $id;?>`;
-
         var url = id == 0 ? '/empl/add' : '/empl/update'
-
 
         Swal.fire({
             title: 'Kamu yakin?',
@@ -142,6 +187,8 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                         level: $('#level').val(),
                         deptId: $('#department').val(),
                         branchid: $('#branch').val(),
+                        grade: $('#grade').val(),
+                        status: $('#status').val(),
                         id: id
 
                     },

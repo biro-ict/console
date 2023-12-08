@@ -43,9 +43,9 @@
                 </div>
                 
                 <div class="card-footer mt-3">
-                    <button type="button" class="btn btn-primary btn-sm" id="addDivision">Tambah</button>
-                    <button type="button" class="btn btn-info btn-sm" id="updateDivision">Ubah</button>
-                    <button type="button" class="btn btn-danger btn-sm" id="deleteDivision">Hapus</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="addEmpl">Tambah</button>
+                    <button type="button" class="btn btn-info btn-sm" id="updateEmpl">Ubah</button>
+                    <button type="button" class="btn btn-danger btn-sm" id="deleteEmpl">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
             </div>
@@ -58,7 +58,7 @@
         location.href = 'index.php'
     })
 
-    $('#addDepts').on('click', function() {
+    $('#addEmpl').on('click', function() {
         var user = `<?php echo $user;?>`;
         $.ajax({
             url: '../components/hrd/formEmpl.php',
