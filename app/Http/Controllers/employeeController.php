@@ -38,7 +38,9 @@
                 $req->input('gender'),
                 $req->input('level'),
                 $req->input('deptId'),
-                $req->input('branchid')
+                $req->input('branchid'),
+                $req->input('status'),
+                $req->input('grade')
             );
         }
 
@@ -50,7 +52,9 @@
                 $req->input('gender'),
                 $req->input('level'),
                 $req->input('deptId'),
-                $req->input('branchid')
+                $req->input('branchid'),
+                $req->input('status'),
+                $req->input('grade')
             );
         }
 

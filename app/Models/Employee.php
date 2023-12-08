@@ -72,7 +72,7 @@
         }
 
 
-        function add_empl($fullname, $username, $gender, $level, $deptId, $branchid) {
+        function add_empl($fullname, $username, $gender, $level, $deptId, $branchid, $grade, $status) {
             $arr = array(
                 'fullname' => $fullname,
                 'username' => $username,
@@ -80,7 +80,8 @@
                 'level' => $level,
                 'deptId' => $deptId,
                 'branchid' => $branchid,
-                'status' => 'active'    
+                'status' => $status,
+                'gradeId' => $grade    
             );
 
             $add = DB::table('users')->insert($arr);
@@ -91,7 +92,7 @@
             ]);
         }
 
-        function update_empl($id, $fullname, $username, $gender, $level, $deptId, $branchid) {
+        function update_empl($id, $fullname, $username, $gender, $level, $deptId, $branchid, $status, $grade) {
             $arr = array(
                 'fullname' => $fullname,
                 'username' => $username,
@@ -99,7 +100,8 @@
                 'level' => $level,
                 'deptId' => $deptId,
                 'branchid' => $branchid,
-                'status' => 'active'    
+                'status' => $status,
+                'gradeId' => $grade        
             );
 
             $update = DB::table('users')->where('id', $id)->update($arr);
