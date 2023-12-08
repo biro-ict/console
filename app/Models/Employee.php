@@ -48,13 +48,19 @@
 
         function search_employee($b=0, $d= 0, $q) {
 
-            $where = " WHERE ((a.fullname LIKE '%$q%') or (a.username LIKE '%$q%') or (a.level LIKE '%$q%') or (b.name LIKE '%$q%') or (d.name LIKE '%$q%') or (c.name LIKE '%$q%') or (a.status LIKE '%$q%'))";
+            $where = " WHERE isEmpl=1 AND ((a.fullname LIKE '%$q%') or (a.username LIKE '%$q%') or (a.level LIKE '%$q%') or (b.name LIKE '%$q%') or (d.name LIKE '%$q%') or (c.name LIKE '%$q%') or (a.status LIKE '%$q%'))";
 
             $where = $b == 0 ? $where : $where . " AND (a.branchid = $b)";
             $where = $d == 0 ? $where : $where . " AND (a.deptId = $d)";
 
 
-            $query = "SELECT a.id, a.fullname, a.username, d.name as gender, a.level, a.status, b.name as deptName, c.name as branchName FROM users a JOIN department b ON a.deptId = b.id JOIN branch c ON a.branchid = c.id JOIN gender d ON a.gender = d.code $where ORDER BY a.fullname";
+            $query = "SELECT a.id, a.fullname, a.username, d.name AS gender, a.level, e.statusName, CONCAT(f.gradeCode, ' - ', f.gradeName) AS grade, b.name AS deptName, c.name AS branchName
+            FROM users a
+            JOIN department b ON a.deptId = b.id
+            JOIN branch c ON a.branchid = c.id
+            JOIN gender d ON a.gender = d.code
+            JOIN mSTATUS e ON a.status = e.id
+            JOIN grade f ON a.gradeId = f.id $where ORDER BY a.fullname";
 
             $get = DB::select($query);
             return response()->json([
