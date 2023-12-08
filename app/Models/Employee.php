@@ -7,7 +7,7 @@
     class Employee extends Model {
 
         function see_empl() {
-            $get = DB::select('SELECT * FROM users ORDER BY fullname');
+            $get = DB::select('SELECT * FROM users where deleted=0 and isEmpl=1 ORDER BY fullname');
             return response()->json([
                 'title' => count($get) > 0 ? 'Berhasil' : 'Gagal',
                 'message' => count($get) > 0 ? 'Data user berhasil diambil' : 'Data user gagal diambil',
@@ -48,7 +48,7 @@
 
         function search_employee($b=0, $d= 0, $q) {
 
-            $where = " WHERE isEmpl=1 AND ((a.fullname LIKE '%$q%') or (a.username LIKE '%$q%') or (a.level LIKE '%$q%') or (b.name LIKE '%$q%') or (d.name LIKE '%$q%') or (c.name LIKE '%$q%') or (a.status LIKE '%$q%'))";
+            $where = " WHERE a.deleted=0 and a.isEmpl=1 AND ((a.fullname LIKE '%$q%') or (a.username LIKE '%$q%') or (a.level LIKE '%$q%') or (b.name LIKE '%$q%') or (d.name LIKE '%$q%') or (c.name LIKE '%$q%') or (a.status LIKE '%$q%'))";
 
             $where = $b == 0 ? $where : $where . " AND (a.branchid = $b)";
             $where = $d == 0 ? $where : $where . " AND (a.deptId = $d)";
@@ -113,7 +113,10 @@
         }
 
         function delete_empl($id) {
-            $delete = DB::table('users')->delete($id);
+            $count = count($id);
+            for($i=0; $i<$count; $i++) {
+                $delete=DB::select("UPDATE users SET deleted=1, deletedTime=now() WHERE id='$id[$i]'");
+            }
             return response()->json([
                 'status' => 'success',
                 'title' => 'Berhasil',
