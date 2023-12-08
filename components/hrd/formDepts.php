@@ -1,6 +1,7 @@
 <?php 
 $user = isset($_GET['user']) ? $_GET['user'] : '';
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
+$title  = $id == 0 ? "Buat" : "Ubah";
 ?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -24,12 +25,15 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                             <label>Direktorat:</label>
                             <select class="form-select form-select-sm" id="direktorat" > </select>
                         </div>
-                        
+                        <div class="col-md-6 mb-3">
+                            <label>Divisi:</label>
+                            <select class="form-select form-select-sm" id="division" > </select>
+                        </div>
                     </div>
                 </div>
 
                 <div class="card-footer mt-3">
-                    <button type="button" class="btn btn-sm btn-success" id="formDirs">Ubah</button>
+                    <button type="button" class="btn btn-sm btn-success" id="formDirs"><?php echo $title;?></button>
                     <button type="button" class="btn btn-danger btn-sm" id="backto">Kembali</button>
                 </div>
             </div>
@@ -63,6 +67,26 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
             
         })
 
+        var divisi = ''
+
+        $.ajax({
+            url: url_api + '/division/search',
+            type: 'post',
+            success: function(res) {
+                if(res.status == 'success') {
+                    var data = res.data 
+                    data.forEach(function(row, index) {
+                        divisi = divisi + `<option value="${row.id}">${row.divisionName}</option>`
+                    });
+                }else {
+                    divisi = '<option>No Division Found</option>'
+                }
+
+                $('#division').html(divisi)
+            }
+            
+        })
+
 
         var user = `<?php echo $user;?>`;
         var id = `<?php echo $id;?>`;
@@ -71,12 +95,12 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
             type: 'get', 
             success: function(res) {
                 if(res.status == 'success') {
-                    console.log(res.data)
                     var data = res.data
                     data.forEach(function(row, index) {
                         $('#name').val(row.name)
                         $('#code').val(row.code)
                         $('#direktorat').val(row.dirId)
+                        $('#division').val(row.divId)
                     })
                 }
             }
@@ -110,6 +134,7 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
                         name: $('#name').val(),
                         code: $('#code').val(),
                         dirid: $('#direktorat').val(),
+                        divid: $('#division').val(),
                         id: id
 
                     },

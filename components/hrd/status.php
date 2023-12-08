@@ -12,9 +12,12 @@
                             <input type="text" class="form-control form-control-sm" placeholder="Cari" id="cari">
                         </div>
                         <content class="col-md-12 mb-3">
+
+                            <caption class="text-muted small-text">Total: <span id="total">0</span></caption>
                             <div class="table-responsive" style="height: 400px">
+                            
                                 <table class="table table-striped table-hover">
-                                    <thead>
+                                    <thead style="background: white; position: sticky; top: 0;box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);">
                                         <th class="col">#</th>
                                         <th class="col">Kode</th>
                                         <th class="col">Nama</th>
@@ -135,10 +138,16 @@
     })
 
     function show_tables() {
+
+        var total = 0
         $.ajax({
-            url: url_api + '/status/all',
-            type: 'get',
+            url: url_api + '/status/search',
+            type: 'post',
+            data: {
+                search: $('#cari').val()
+            },
             success: function(res) {
+                total = res.data == undefined ? 0 : res.data.length
                 var tb = ''
                 if(res.status == 'success') {
                     var data = res.data
@@ -153,10 +162,15 @@
                     tb = `<tr><td colspan="3" class="text-center">${res.message}</td></tr>`
                 }
 
+                $('#total').text(total)
                 $('#tbl-status').html(tb)
             }
         })
     } 
+
+    $('#cari').on('keyup', function() {
+        show_tables()
+    })
 
     $(document).ready(function() {
         show_tables()

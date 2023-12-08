@@ -135,8 +135,9 @@
 
     function show_tables() {
         $.ajax({
-            url: url_api + '/grade/all',
-            type: 'get',
+            url: url_api + '/grade/search',
+            type: 'post',
+            data: {query: $('#cari').val()},
             success: function(res) {
                 var tb = ''
                 if(res.status == 'success') {
@@ -156,6 +157,10 @@
             }
         })
     }
+
+    $('#cari').on('keyup', function() {
+        show_tables()
+    })
 
     $(document).ready(function() {
         show_tables()

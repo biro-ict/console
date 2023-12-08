@@ -19,7 +19,7 @@
                             <caption class="text-muted">Total: <span id="total">0</span></caption>
                             <article class="table-responsive" style="height: 400px">
                                 <table class="table table-striped table-hover">
-                                    <thead>
+                                    <thead style="background: white; position: sticky; top: 0;box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);">
                                         <th class="col">#</th>
                                         <th class="col">Nama</th>
                                         <th class="col">Kode</th>
@@ -36,7 +36,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addDepts">Tambah</button>
-                    <button type="button" class="btn btn-info btn-sm" id="updateDeps">Ubah</button>
+                    <button type="button" class="btn btn-info btn-sm" id="updateDepts">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteDepts">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                     <button type="button" class="btn btn-success btn-sm" id="exportDepts">Export To Excel</button>
@@ -68,6 +68,7 @@
     })
 
     $('#updateDepts').on('click', function() {
+        var user = `<?php echo $user;?>`;
         var checkbox = document.querySelectorAll('.checked:checked')
         var array = []
         var totals = checkbox == undefined ? 0 : checkbox.length
