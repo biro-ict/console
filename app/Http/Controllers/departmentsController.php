@@ -26,7 +26,8 @@
             return $this->model->add_depts(
                 $req->input('dirid'),
                 $req->input('name'),
-                $req->input('code')
+                $req->input('code'),
+                $req->input('divid'), 
             );
         }
 
@@ -35,7 +36,8 @@
                 $req->input('id'),
                 $req->input('dirid'),
                 $req->input('name'),
-                $req->input('code')
+                $req->input('code'),
+                $req->input('divid'), 
             );
         }
 

@@ -6,7 +6,7 @@
 
     class Departments extends Model {
         function see_depts() {
-            $get = DB::table('department')->get();
+            $get = DB::table('department')->where('deleted', 0)->get();
             return response()->json([
                 'title' => count($get) > 0 ? 'Berhasil' : 'Gagal',
                 'message' => count($get) > 0 ? 'Data Depts berhasil diambil' : 'Data Depts gagal diambil',
@@ -27,7 +27,7 @@
 
         function search_depts($dirs= 0, $q='') {
             $where = $dirs != 0 ? " AND (a.dirId = $dirs) " : '';
-            $query = "SELECT a.id, a.name, a.code, b.name as dirName, c.divisionName AS divName FROM department a JOIN directory b ON a.dirId = b.id  JOIN division c ON a.divId = c.id WHERE ((a.name LIKE '%$q%') or (a.code LIKE '%$q%') or (b.name LIKE '%$q%') or (c.divisionName LIKE '%$q%'))  $where order by a.name";
+            $query = "SELECT a.id, a.name, a.code, b.name as dirName, c.divisionName AS divName FROM department a JOIN directory b ON a.dirId = b.id  JOIN division c ON a.divId = c.id WHERE a.deleted=0 AND ((a.name LIKE '%$q%') or (a.code LIKE '%$q%') or (b.name LIKE '%$q%') or (c.divisionName LIKE '%$q%'))  $where order by a.name";
             $get = DB::select($query);
             return response()->json([
                 'title' => count($get) > 0 ? 'Berhasil' : 'Gagal',
@@ -38,11 +38,13 @@
 
         }
 
-        function add_depts($dir, $name, $code) {
+        function add_depts($dir, $name, $code, $division) {
             $arr = array(
                 'dirId' => $dir,
                 'name' => $name,
-                'code' => $code
+                'code' => $code,
+                'divId' => $division
+
             );
 
             $add = DB::table('department')->insert($arr);
@@ -53,11 +55,12 @@
             ]);
         }
 
-        function update_depts($id, $dir, $name, $code) {
+        function update_depts($id, $dir, $name, $code, $division) {
             $arr = array(
                 'dirId' => $dir,
                 'name' => $name,
-                'code' => $code
+                'code' => $code,
+                'divId' => $division
             );
 
             $update = DB::table('department')->where('id', $id)->update($arr);
@@ -69,7 +72,11 @@
         }
 
         function delete_depts($id) {
-            $delete = DB::table('department')->delete($id);
+            $count = count($id);
+
+            for($i=0;$i<$count;$i++) {
+                $delete = DB::select("UPDATE department SET deleted=1, deletedTime=now() WHERE id=$id[$i]");
+            }
             return response()->json([
                 'status' => 'success',
                 'title' => 'Berhasil',

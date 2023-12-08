@@ -18,6 +18,11 @@
             return $this->model->see_by_id($id);
         }
 
+
+        public function searchGrade(Request $req) {
+            return $this->model->search_grade($req->input('query'));
+        }
+
         public function addGrade(Request $req) {
             return $this->model->add_grade($req->input('name'), $req->input('code'));
         }

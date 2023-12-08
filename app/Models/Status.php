@@ -45,6 +45,31 @@
 
         }
 
+        function search_status($id) {
+            $where = '';
+            if($id!='' || $id!=null) {
+                $where = "AND (statusName LIKE '%$id%') OR (statusCode LIKE '%$id%')";
+            }
+
+            $get = DB::Select("SELECT * FROM mstatus WHERE deleted=0 $where");
+
+            if(count($get) > 0) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Successfully get data',
+                    'title' => 'Berhasil',
+                    'data' => $get
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Sorry, status not found',
+                    'title' => 'Ooops'
+                ]);
+            }
+
+        }
+
         function add_status($name, $code) {
             $check = DB::select("SELECT * FROM mstatus where statusCode='$code'");
 

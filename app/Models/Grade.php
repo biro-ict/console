@@ -41,6 +41,31 @@
 
         }
 
+        function search_grade($query) {
+            $where = '';
+            if($query!='' || $query!=null) {
+                $where = " AND (gradeName LIKE '%$query%') OR (gradeCode='%$query%')";
+            }
+
+            $get = DB::SELECT("SELECT * FROM grade WHERE deleted=0 $where");
+            if(count($get) > 0) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Successfully get data',
+                    'title' => 'Berhasil',
+                    'data' => $get
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Sorry, grade not found',
+                    'title' => 'Ooops'
+                ]);
+            }
+
+
+        }
+
         function add_grade($name, $code) {
             $check = DB::select("SELECT * FROM grade where gradeCode='$code'");
 

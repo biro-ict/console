@@ -18,6 +18,10 @@
             return $this->model->see_by_id($id);
         }
 
+        public function searchStatus(Request $req) {
+            return $this->model->search_status($req->input('search'));
+        }
+
         public function addStatus(Request $req) {
             return $this->model->add_status($req->input('name'), $req->input('code'));
         }
