@@ -70,49 +70,86 @@
         })
     })
 
-    function edit_data(id) {
+    $('#updateEmpl').on('click', function() {
         var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/hrd/formEmpl.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
 
-    function del_data(id) {
-        Swal.fire({
-            title: 'Kamu yakin?',
-            text: 'Kamu akan menghapus data ini secara permanen',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#0275d8',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) =>  {
-            if(result.value) {
-                $.ajax({
-                    url: url_api + '/empl/delete',
-                    type: 'post',
-                    data: {
-                        id: id
-                    },
-                    success: function(res) {
-                        Swal.fire(res.title, res.message, res.status)
-                        if(res.status == 'success') location.reload()
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                       if(xhr.status == 500) Swal.fire('Ooops', 'Sepertinya data yang kamu ingin hapus merupakan data primary. Silahkan cek kembali sebelum menghapus data ini. ', 'error')
-                    }
-                })
-            }else{
-                Swal.fire('Batal', 'Data batal dihapus', 'error')
-            }
-        })
-    }
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih Karyawan terlebih dahulu',
+                'warning'
+            )
+        }else if(totals > 1){
+            Swal.fire(
+                'Peringatan',
+                'Harap pilih hanya satu karyawan',
+                'warning'
+            )
+        }else{
+            var value = document.querySelector('.checked:checked').value
+            var user = `<?php echo $user;?>`;
+            $.ajax({
+                url: '../components/hrd/formEmpl.php',
+                type: 'get',
+                data: {user:user, id: value},
+                success: function(res) {
+                    $('#content-user').html(res)
+                }
+            })
+        }
+    })
+
+    $('#deleteEmpl').on('click', function() {
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
+
+        if(totals == 0) {
+            Swal.fire(
+                'Peringatan',
+                'Silahkan pilih Karyawan terlebih dahulu',
+                'warning'
+            )
+        }else {
+            $('#tbl-empl input[type=checkbox]:checked').each(function() {
+                var row = $(this).val()
+                array.push(row)
+           })
+
+           console.log(array)
+            Swal.fire({
+                title: 'Kamu yakin?',
+                text: 'Data akan terhapus secara permanen',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'Batal',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    $.ajax({
+                        url: url_api + '/empl/delete',
+                        type: 'post',
+                        data: {
+                            id: array
+                        },
+                        success: function(res){
+                            Swal.fire(res.title, res.message, res.status)
+                            if(res.status == 'success')   show_table(0, 0, '')
+                        }
+                    })
+                }else{
+                    Swal.fire('Batal', 'Data batal hapus', 'warning')
+                }
+            })
+        }
+    })
+
 
     $('#cari').on('keyup', function() {
         var query = $(this).val()
