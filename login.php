@@ -78,7 +78,7 @@
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-2 text-center">Nama Apps</h4>
+              <h4 class="mb-2 text-center">BBG HUB</h4>
               <p class="mb-4 text-center">Masuk untuk melanjutkan</p>
               
               <div class="alert alert-danger alert-dismissible fade d-none" role="alert">

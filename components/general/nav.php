@@ -37,27 +37,27 @@
 <li class="menu-item">
     <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bxs-inbox"></i>
-        <div data-i18n="Account Settings">Tiket Saya</div>
+        <div data-i18n="Account Settings">Tiket</div>
     </a>
     <ul class="menu-sub">
         <li class="menu-item">
             <a href="data.php?id=personal" class="menu-link">
-                <div data-i18n="Account"><small>Tiket Masuk</small></div>
+                <div data-i18n="Account"><small>Tiket saya</small></div>
             </a>
         </li>
         <li class="menu-item">
             <a href="data.php?id=bpjs" class="menu-link">
-                <div data-i18n="Notifications"><small>Tiket Keluar</small></div>
+                <div data-i18n="Notifications"><small>Tiket masuk</small></div>
             </a>
         </li>  
         <li class="menu-item">
             <a href="data.php?id=apps" class="menu-link">
-                <div data-i18n="Notifications"><small>Status Tiket</small></div>
+                <div data-i18n="Notifications"><small>Log tiket</small></div>
             </a>
         </li>  
         <li class="menu-item">
             <a href="data.php?id=apps" class="menu-link">
-                <div data-i18n="Notifications"><small>Log Tiket</small></div>
+                <div data-i18n="Notifications"><small>Preferensi tiket</small></div>
             </a>
         </li>  
     </ul>
