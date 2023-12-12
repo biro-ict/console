@@ -41,22 +41,22 @@
     </a>
     <ul class="menu-sub">
         <li class="menu-item">
-            <a href="data.php?id=personal" class="menu-link">
+            <a href="data.php?id=myticket" class="menu-link">
                 <div data-i18n="Account"><small>Tiket saya</small></div>
             </a>
         </li>
         <li class="menu-item">
-            <a href="data.php?id=bpjs" class="menu-link">
+            <a href="data.php?id=inbox" class="menu-link">
                 <div data-i18n="Notifications"><small>Tiket masuk</small></div>
             </a>
         </li>  
         <li class="menu-item">
-            <a href="data.php?id=apps" class="menu-link">
+            <a href="data.php?id=logticket" class="menu-link">
                 <div data-i18n="Notifications"><small>Log tiket</small></div>
             </a>
         </li>  
         <li class="menu-item">
-            <a href="data.php?id=apps" class="menu-link">
+            <a href="data.php?id=preference" class="menu-link">
                 <div data-i18n="Notifications"><small>Preferensi tiket</small></div>
             </a>
         </li>  

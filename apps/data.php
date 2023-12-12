@@ -237,6 +237,8 @@
 
                 arr = ['personal', 'bpjs', 'apps']
                 path = arr.includes(func) ? 'general' : path
+                arr = ['myticket', 'inbox', 'logticket', 'preference'] 
+                path = arr.includes(func) ? 'ticket' : path
                 $.ajax({
                   url : '../components/'+path+'/'+func+'.php',
                   type: 'get',
@@ -247,6 +249,8 @@
                     $('#content-user').html(res)
                   }
                 })
+
+             
 
               })
             }
