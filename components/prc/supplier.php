@@ -13,7 +13,7 @@
         <div class="col-lg-12 mb-4 order-0">
             <div class="card">
                 <div class="card-header bg-primary">
-                    <h4 class="text-title text-white">Data Supplier</h4>
+                    <h4 class="text-title text-white">Data Vendor</h4>
                 </div>
                 <div class="card-body mt-3">
                     <div class="row">
@@ -23,7 +23,7 @@
                         <div class="col-md-12 mt-3">
                             <div class="table-responsive" style="height: 400px">
                                 <table class="table table-sm table-striped table-hover">
-                                    <thead>
+                                    <thead style="background: white; position: sticky; top: 0;box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);">
                                         <th class="col">#</th>
                                         <th class="col">ID</th>
                                         <th class="col">Nama</th>

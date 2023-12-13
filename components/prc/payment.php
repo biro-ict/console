@@ -33,7 +33,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addPaymentterm">Tambah</button>
-                    <button type="button" class="btn btn-warning" id="updatePaymentterm">Ubah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updatePaymentterm">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deletePaymentterm">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -63,7 +63,7 @@
         var user = `<?php echo $user;?>`;
         var checkbox = document.querySelectorAll('.checked:checked')
         var array = []
-        var total = checkbox == undefined ? 0 : checkbox.length
+        var totals = checkbox == undefined ? 0 : checkbox.length
 
         if(totals == 0) {
             Swal.fire('Peringatan', 'Silahkan pilih metode pembayaran', 'warning')

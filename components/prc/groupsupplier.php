@@ -22,7 +22,6 @@
                                         <th class="col">ID</th>
                                         <th class="col">Nama</th>
                                         <th class="col">Keterangan</th>
-                                        <th class="col">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-groupsupplier"></tbody>
                                 </table>
@@ -34,6 +33,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addGroupsupplier">Tambah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateGroupsupplier">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteGroupsupplier">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -57,6 +57,25 @@
                 $('#content-user').html(res)
             }
         })
+    })
+
+    $('#updateGroupsupplier').on('click', function() {
+        var user = `<?php echo $user;?>`;
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        if(totals==0) {
+            Swal.fire('Peringatan', 'Harap pilih satu kategori vendor', 'warning')
+        }else if(totals>1) {
+            Swal.fire('Peringatan', 'Harap pilih satu kategori vendor', 'warning')
+        }else {
+            var value = document.querySelector('.checked:checked').value
+            $.ajax({
+                url: '../components/prc/formGroupsupplier.php',
+                type: 'get',
+                data:{user: user, id: value},
+                success: function(res) { $('#content-user').html(res)}
+            })
+        }
     })
 
     $('#deleteGroupsupplier').on('click', function() {
@@ -107,18 +126,7 @@
         }
     })
 
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/prc/formGroupsupplier.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
-
+   
     $('#cari').on('keyup', function() {
         show_tables()
     })
@@ -142,7 +150,6 @@
                             <td><b>${items.bpgroupid}</b></td>
                             <td>${items.bpgroupname}</td>
                             <td>${desc}</td>
-                            <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data('${items.bpgroupid}')">Edit</button></td>
                             </tr>`
                     })
 
