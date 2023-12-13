@@ -22,7 +22,6 @@
                                         <th class="col">ID</th>
                                         <th class="col">Nama</th>
                                         <th class="col">Keterangan</th>
-                                        <th class="col">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-itemmeasure"></tbody>
                                 </table>
@@ -34,6 +33,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addItemmeasure">Tambah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateItemmeasure">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteItemmeasure">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -59,6 +59,29 @@
         })
     })
 
+    $('#updateItemmeasure').on('click', function() {
+        var user = `<?php echo $user;?>`
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
+        if(totals==0){
+            Swal.fire('Peringatan', 'Silahkan pilih satuan item terlebih dulu', 'warning')
+        }else if(totals>1) {
+            Swal.fire('Peringatan','Silahkan pilih satuan item terlebih dulu')
+        }else{
+            var value = document.querySelector('.checked:checked').value
+            $.ajax({
+                url: '../components/prc/formItemmeasure.php',
+                type: 'get',
+                data: {user: user, id: value},
+                success: function(res) {
+                    $('#content-user').html(res)
+                }
+            })
+        }
+    })
+
     $('#deleteItemmeasure').on('click', function() {
         var users = `<?php echo $user;?>`;
         var checkbox = document.querySelectorAll('.checked:checked')
@@ -69,7 +92,7 @@
         if(totals == 0) {
             Swal.fire(
                 'Peringatan',
-                'Silahkan pilih data gudang terlebih dahulu',
+                'Silahkan pilih data Satuan item terlebih dahulu',
                 'warning'
             )
         }else {
@@ -111,18 +134,6 @@
         show_tables()
     });
 
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/prc/formItemmeasure.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
-
     function show_tables() {
         var cari = $('#cari').val()
         $.ajax({
@@ -141,7 +152,6 @@
                             <td><b>${items.itemmeasureid}</b></td>
                             <td>${items.itemmeasurename}</td>
                             <td>${items.itemmeasuredescr}</td>
-                            <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data('${items.itemmeasureid}')">Edit</button></td>
                             </tr>`
                     })
 

@@ -22,7 +22,6 @@
                                         <th class="col">ID</th>
                                         <th class="col">Nama</th>
                                         <th class="col">Keterangan</th>
-                                        <th class="col">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-payment"></tbody>
                                 </table>
@@ -34,6 +33,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addPaymentterm">Tambah</button>
+                    <button type="button" class="btn btn-warning" id="updatePaymentterm">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deletePaymentterm">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -58,6 +58,30 @@
             }
         })
     })
+
+    $('#updatePaymentterm').on('click', function() {
+        var user = `<?php echo $user;?>`;
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var total = checkbox == undefined ? 0 : checkbox.length
+
+        if(totals == 0) {
+            Swal.fire('Peringatan', 'Silahkan pilih metode pembayaran', 'warning')
+        }else if(totals>1) {
+            Swal.fire('Peringatan', 'Harap pilih satu metode pembayaran saja', 'warning')
+        }else {
+            var value = document.querySelector('.checked:checked').value
+            $.ajax({
+                url: '../components/prc/formPayment.php',
+                type: 'get',
+                data: {user: user, id: value},
+                success: function(res) {
+                    $('#content-user').html(res)
+                }
+            })
+        }
+    })
+
 
     $('#deletePaymentterm').on('click', function() {
         var users = `<?php echo $user;?>`;
@@ -107,17 +131,6 @@
         }
     })
 
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/prc/formPayment.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
 
     $('#cari').on('keyup', function() {
         show_tables()
@@ -141,13 +154,12 @@
                             <td><b>${items.paymenttermid}</b></td>
                             <td>${items.paymenttermname}</td>
                             <td>${items.paymenttermdescr}</td>
-                            <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data('${items.paymenttermid}')">Edit</button></td>
-                            </tr>`
+                        </tr>`
                     })
 
                    
                 }else {
-                    tb = tb + `<tr><td colspan="5" class="text-center"><p>Data tidak ditemukan</p></td></tr>`
+                    tb = tb + `<tr><td colspan="4" class="text-center"><p>Data tidak ditemukan</p></td></tr>`
                 }
 
                 $('#tbl-payment').html(tb)

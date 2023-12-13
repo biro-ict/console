@@ -41,7 +41,6 @@
                                         <th class="col">Satuan PO</th>
                                         <th class="col">Satuan Stok</th>
                                         <th class="col">Spesifikasi</th>
-                                        <th class="col">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-items"></tbody>
                                 </table>
@@ -53,6 +52,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addItems">Tambah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateItems">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteItems">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -76,6 +76,27 @@
                 $('#content-user').html(res)
             }
         })
+    })
+
+    $('#updateItems').on('click', function() {
+        var user = `<?php echo $user;?>`;
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        
+        if(totals==0) {
+            Swal.fire('Peringatan', 'Silahkan Pilih item terlebih dulu', 'warning')
+        }else if(totals > 1) {
+            Swal.fire('Peringatan', 'Harap pilih hanya satu item', 'warning')
+        }else {
+            var value = document.querySelector('.checked:checked').value
+            $.ajax({
+                url: '../components/prc/formItem.php',
+                type: 'get',
+                data: {user: user, id: value},
+                success: function(res) {$('#content-user').html(res)}
+            })
+        }
     })
 
     $('#deleteItems').on('click', function() {
@@ -126,17 +147,6 @@
         }
     })
 
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/prc/formItem.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
 
     function show_tables() {
         $.ajax({
@@ -165,7 +175,6 @@
                             <td>${items.satuan_po}</td>
                             <td>${items.satuan_stok}</td>
                             <td>${spesifikasi}</td>
-                            <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data('${items.itemid}')">Edit</button></td>
                             </tr>`
                     })
 

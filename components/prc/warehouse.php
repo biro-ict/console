@@ -22,7 +22,6 @@
                                         <th class="col">ID</th>
                                         <th class="col">Nama</th>
                                         <th class="col">Keterangan</th>
-                                        <th class="col">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-warehouse"></tbody>
                                 </table>
@@ -34,6 +33,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addWarehouse">Tambah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateWarehouse">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteWarehouse">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -107,17 +107,29 @@
         }
     })
 
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/prc/formWarehouse.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
+    $('#updateWarehouse').on('click', function () {
+            var user    = `<?php echo $user;?>`;
+            var checkbox= document.querySelectorAll('.checked:checked')
+            var array   = []
+            var totals = checkbox == undefined ? 0 : checkbox.length
+            var message= ''
+
+            if(totals==0) {
+                Swal.fire('Peringatan', 'Silahkan pilih gudang terlebih dulu', 'warning')
+            }else if(totals > 1) {
+                Swal.fire('Peringatan', 'Harap pilih satu gudang saja', 'warning')
+            }else {
+                var value = document.querySelector('.checked:checked').value
+                $.ajax({
+                    url: '../components/prc/formWarehouse.php',
+                    type: 'get',
+                    data: {user: user, id: value},
+                    success: function(res) {
+                        $('#content-user').html(res)
+                    }
+                })
             }
-        })
-    }
+    })
 
     function show_tables() {
         var key_search = $('#cari').val();
@@ -132,13 +144,13 @@
                     var data = res.data
                     var tb = ''
                     data.forEach(function(items, index) {
-                        tb = tb + `<tr>
+                        tb = tb + 
+                        `<tr>
                              <td class="col-1"><input type="checkbox" class="form-check-input  checked" value="${items.warehouseid}"> </td>
                             <td><b>${items.warehouseid}</b></td>
                             <td>${items.warehousename}</td>
                             <td>${items.warehousedescr}</td>
-                            <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data('${items.warehouseid}')">Edit</button></td>
-                            </tr>`
+                        </tr>`
                     })
 
                   

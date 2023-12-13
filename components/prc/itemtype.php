@@ -22,7 +22,6 @@
                                         <th class="col">ID</th>
                                         <th class="col">Nama</th>
                                         <th class="col">Keterangan</th>
-                                        <th class="col">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-itemtype"></tbody>
                                 </table>
@@ -34,6 +33,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addItemtype">Tambah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateItemType">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteItemtype">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -57,6 +57,29 @@
                 $('#content-user').html(res)
             }
         })
+    })
+
+    $('#updateItemType').on('click', function() {
+        var user = `<?php echo $user;?>`;
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
+        if(totals == 0) {
+            Swal.fire('Peringatan', 'Silahkan pilih tipe item terlebih dulu', 'warning')
+        }else if(totals > 1) {
+            Swal.fire('Peringatan', 'Harap hanya pilih satu tipe item', 'warning')
+        }else {
+            var value = document.querySelector('.checked:checked').value
+            $.ajax({
+                url: '../components/prc/formItemtype.php',
+                type: 'get',
+                data: {user: user, id: value},
+                success: function(res) {
+                    $('#content-user').html(res)
+                }
+            })
+        }
     })
 
     $('#deleteItemtype').on('click', function() {
@@ -111,18 +134,6 @@
         show_tables()
     })
 
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/prc/formItemtype.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
-
     function show_tables() {
 
         var cari = $('#cari').val()
@@ -145,7 +156,6 @@
                             <td><b>${items.itemtypeid}</b></td>
                             <td>${items.itemtypename}</td>
                             <td>${items.itemtypedescr}</td>
-                            <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data('${items.itemtypeid}')">Edit</button></td>
                         </tr>`
                     })
                 }else {tb = tb + `<tr><td colspan="5"><p class="text-center">Data tidak ditemukan</p></td></tr>`}

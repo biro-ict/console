@@ -22,7 +22,6 @@
                                         <th class="col">ID</th>
                                         <th class="col">Nama</th>
                                         <th class="col">Keterangan</th>
-                                        <th class="col">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-itemcategory"></tbody>
                                 </table>
@@ -34,6 +33,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addItemcategory">Tambah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateItemcategory">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteItemcategory">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -57,6 +57,30 @@
                 $('#content-user').html(res)
             }
         })
+    })
+
+    $('#updateItemcategory').on('click', function() {
+        var user = `<?php echo $user;?>`;
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var array = []
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        var message = ''
+
+        if(totals == 0) {
+            Swal.fire('Peringatan', 'Silahkan pilih kategori item terlebih dulu', 'warning')
+        }else if(totals>1) {
+            Swal.fire('Peringatan', 'Harap hanya pilih satu kategori item', 'warning')
+        }else {
+            var value = document.querySelector('.checked:checked').value
+            $.ajax({
+                url: '../components/prc/formItemcategory.php',
+                type: 'get',
+                data: {user:user, id:value},
+                success: function(res) {
+                    $('#content-user').html(res)
+                }
+            })
+        }
     })
 
     $('#deleteItemcategory').on('click', function() {
@@ -107,18 +131,6 @@
         }
     })
 
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/prc/formItemcategory.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
-
     $('#cari').on('keyup', function() {
         show_tables()
     })
@@ -136,13 +148,13 @@
                     var data = res.data
                     var tb = ''
                     data.forEach(function(items, index) {
-                        tb = tb + `<tr>
+                        tb = tb + 
+                        `<tr>
                              <td class="col-1"><input type="checkbox" class="form-check-input  checked" value="${items.itemcategoryid}"> </td>
                             <td><b>${items.itemcategoryid}</b></td>
                             <td>${items.itemcategoryname}</td>
                             <td>${items.itemcategorydescr}</td>
-                            <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data('${items.itemcategoryid}')">Edit</button></td>
-                            </tr>`
+                        </tr>`
                     })
 
                     
