@@ -23,7 +23,6 @@
                                         <th class="col">Nama</th>
                                         <th class="col">Desksrpsi</th>
                                         <th class="col">Approved</th>
-                                        <th class="col" colspan="2">Aksi</th>
                                     </thead>
                                     <tbody id="tbl-datasource"></tbody>
                                 </table>
@@ -35,6 +34,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addDatasource">Tambah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateDatasource">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteDataSource">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -46,6 +46,22 @@
 <script type="text/javascript">
     $('#backto').on('click', function() {
         window.history.go(-1)
+    })
+
+    $('#updateDatasource').on('click', function() {
+        var user = `<?php echo $user;?>`;
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var totals  = checkbox == undefined ? 0 : checkbox.length
+
+        if(totals==0) {Swal.fire('Peringatan', 'Harap pilih satu datasource', 'warning')} else if(totals>1) {Swal.fire('Peringatan', 'Harap pilih satu datasource', 'warning')} else {
+            var value = document.querySelector('.checked:checked').value
+            $.ajax({
+                url: '../components/kea/formDatasource.php',
+                type: 'get',
+                data: {user: user, id: value},
+                success: function(res) { $('#content-user').html(res)}
+            })
+        }
     })
 
     $('#deleteDataSource').on('click', function() {
@@ -84,7 +100,7 @@
                         },
                         success: function(res) {
                            Swal.fire(res.title, res.message, res.status);
-                           if(res.status == 'success') location.reload()
+                           if(res.status == 'success') show_tables()
                         }
                     })
                 }else{
@@ -136,7 +152,6 @@
                             <td>${items.DataSourceName}</td>
                             <td>${items.DataSourceDescr}</td>
                             <td>${items.Approved}</td>
-                            <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data(${items.DataSource})">Edit</button></td>
                             </tr>`
                     })
                 }else {
@@ -151,20 +166,4 @@
     $(document).ready(function() {
         show_tables()
     })
-
- 
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/kea/formDatasource.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
-
-
-
 </script>

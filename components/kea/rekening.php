@@ -30,8 +30,6 @@
                                         <th class="col">Data Source</th>
                                         <th class="col">Mata Anggaran</th>
                                         <th class="col">Saldo</th>
-                                        <th class="col" colspan="2">Aksi</th>
-                                    </thead>
                                     <tbody id="tbl-rekening"></tbody>
                                 </table>
                             </div>
@@ -42,6 +40,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addRekening">Tambah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateRekening">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteRekening">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -53,6 +52,27 @@
 <script type="text/javascript">
     $('#backto').on('click', function() {
         window.history.go(-1)
+    })
+
+    $('#updateRekening').on('click', function() {
+        var user = `<?php echo $user;?>`;
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var totals = checkbox == undefined ? 0 : checkbox.length
+        
+        if(totals==0) {
+            Swal.fire('Peringatan', 'Harap pilih satu rekening', 'warning')
+        } else if(totals>1) {
+            Swal.fire('Peringatan', 'Harap pilih satu rekening', 'warning')
+        }else {
+            var value = document.querySelector('.checked:checked').value
+            $.ajax({
+                url: '../components/kea/formRekening.php',
+                type: 'get',
+                data: {user:user, id:value},
+                success: function(res) {$('#content-user').html(res)}
+            })
+        }
+        
     })
 
     $('#deleteRekening').on('click', function() {
@@ -91,7 +111,7 @@
                         },
                         success: function(res) {
                            Swal.fire(res.title, res.message, res.status);
-                           if(res.status == 'success') location.reload()
+                           if(res.status == 'success') show_tables()
                         }
                     })
                 }else{
@@ -145,7 +165,6 @@
                                 style: 'currency',
                                 currency: items.MataUang,
                             })}</td>
-                            <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data(${items.NoRekening})">Edit</button></td>
                             </tr>`
                     })
                 }else{
@@ -199,19 +218,4 @@
     $('#kodebank').on('change', function() {
         show_tables()
     })
-
-    function edit_data(id) {
-        var user = `<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/kea/formRekening.php',
-            type: 'get',
-            data: {user:user, id: id},
-            success: function(res) {
-                $('#content-user').html(res)
-            }
-        })
-    }
-
-
-
 </script>

@@ -21,7 +21,6 @@
                                             <th>Kode</th>
                                             <th>Nama</th>
                                             <th>Negara</th>
-                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbl-currency"></tbody>
@@ -32,6 +31,7 @@
                 </div>
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addCurrency">Tambah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateCurrency">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteCurrency">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -55,6 +55,24 @@
                 $('#content-user').html(res)
             }
         })
+    })
+
+    $('#updateCurrency').on('click', function() {
+        var user = `<?php echo $user;?>`;
+        var checkbox = document.querySelectorAll('.checked:checked')
+        var totals = checkbox == undefined ? 0 : checkbox.length
+
+        if(totals==0 || totals > 1) {
+            Swal.fire('Peringatan', 'Harap pilih satu mata uang saja', 'warning')
+        }else {
+            var value = document.querySelector('.checked:checked').value
+            $.ajax({
+                url: '../components/kea/formCurrency.php',
+                type: 'get',
+                data: {user: user, id: value},
+                success: function(res) {$('#content-user').html(res)}
+            })
+        }
     })
 
     $('#deleteCurrency').on('click', function() {
@@ -99,15 +117,7 @@
         }
     })
 
-    function edit_data(id) {
-        var user=`<?php echo $user;?>`;
-        $.ajax({
-            url: '../components/kea/formCurrency.php',
-            type: 'get',
-            data: {user: user, id: id},
-            success: function(res) { $('#content-user').html(res)}
-        })
-    }
+
 
     $('#cari').on('keyup', function() {
         show_tables()
@@ -132,8 +142,7 @@
                                 <td class="col-1"><input type="checkbox" class="form-check-input checked" value="${items.MataUang}"></td>
                                 <td>${items.MataUang}</td>
                                 <td>${items.NamaMataUang}</td>
-                                <td>${items.Negara}</td>
-                                <td><button type="button" class="btn btn-sm btn-info" onclick="edit_data('${items.MataUang}')">Edit</button></td>
+                                <td>${items.Negara}</td>    
                             </tr>
                         `
                     })
