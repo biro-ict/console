@@ -14,7 +14,6 @@
                         </div>
                        
                         <div class="col-md-12">
-                            <caption class="text-muted text-small">Total Organisasi: <span id="total">0</span></caption>
                             <article class="table-responsive" style="height: 400px">
                                 <table class="table table-striped table-hover">
                                     <thead>
@@ -28,13 +27,14 @@
                                     <tbody id="tbl-orgz"></tbody>
                                 </table>
                             </article>
+                            <caption class="text-muted text-small">Total Organisasi: <span id="total">0</span></caption>
                         </div>
                     </div>
                 </main>
                 
                 <footer class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addOrgz">Tambah</button>
-                    <button type="button" class="btn btn-info btn-sm" id="updateOrgz">Ubah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateOrgz">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteOrgz">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                     <button type="button" class="btn btn-success btn-sm" id="downloadOrgz">Export to excel</button>

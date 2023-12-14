@@ -11,10 +11,10 @@
                         <div class="col-auto mb-3">
                             <input type="text" class="form-control form-control-sm" placeholder="Cari" id="cari">
                         </div>
-                        <content class="col-md-12 mb-3">
+                        <div class="col-md-12 mb-3">
 
-                            <caption class="text-muted small-text">Total: <span id="total">0</span></caption>
-                            <div class="table-responsive" style="height: 400px">
+                         
+                            <article class="table-responsive" style="height: 400px">
                             
                                 <table class="table table-striped table-hover">
                                     <thead style="background: white; position: sticky; top: 0;box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);">
@@ -24,14 +24,15 @@
                                     </thead>
                                     <tbody id="tbl-status"></tbody>
                                 </table>
-                            </div>
-                        </content>
+                            </article>
+                            <caption class="text-muted">Total: <span id="total">0</span></caption>
+                        </div>
                     </div>
                 </main>
                 
                 <footer class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addStatus">Tambah</button>
-                    <button type="button" class="btn btn-info btn-sm" id="updateStatus">Ubah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateStatus">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteStatus">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </footer>

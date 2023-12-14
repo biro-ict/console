@@ -16,8 +16,8 @@
                         <div class="col-auto mb-3">
                             <input type="text" class="form-control form-control-sm" placeholder="Cari" id="cari">
                         </div>
-                        <content class="col-md-12 mb-3">
-                            <div class="table-responsive" style="height: 400px">
+                        <div class="col-md-12 mb-3">
+                            <article class="table-responsive" style="height: 400px">
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <th class="col">#</th>
@@ -27,15 +27,18 @@
                                     </thead>
                                     <tbody id="tbl-division"></tbody>
                                 </table>
-                            </div>
-                        </content>
+                               
+                            </article>
+                            <caption class="text-muted text-center">Total: <span id="total">0</span></caption>
+                        </div>
+                       
                         
                     </div>
                 </main>
                 
                 <footer class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addDivision">Tambah</button>
-                    <button type="button" class="btn btn-info btn-sm" id="updateDivision">Ubah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateDivision">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteDivision">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </footer>
@@ -51,6 +54,7 @@
 
 
     function show_tables() {
+        var total = 0
         var cari = document.getElementById('cari').value
         var dirs = document.getElementById('show-dirs').value
         var tb = ''
@@ -64,6 +68,7 @@
                 dir: dirs 
             },
             success: function(res) {
+                total = res.data.length
                 if(res.status=='success') {
                     var data = res.data
                     data.forEach(function(items, index) {
@@ -79,6 +84,7 @@
                 }
 
                 tbody.innerHTML = tb
+                document.getElementById('total').innerHTML = total
             }
         })
         

@@ -20,7 +20,7 @@
                         
                         <div class="col-md-12">
                             <article class="table-responsive" style="height: 400px">
-                            <caption class="text-muted text-center">Total: <span id="total">0</span></caption>
+                          
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <th class="col">#</th>
@@ -31,6 +31,7 @@
                                     <tbody id="tbl-dirs"></tbody>
                                 </table>
                             </article>
+                            <caption class="text-muted text-center">Total: <span id="total">0</span></caption>
                         </div>
                         
                     </div>
@@ -38,7 +39,7 @@
                 
                 <footer class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addDirs">Tambah</button>
-                    <button type="button" class="btn btn-info btn-sm" id="updateDirs">Ubah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateDirs">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteDirs">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                     <button type="button" class="btn btn-success btn-sm" id="exportDirs">Export to Excel</button>

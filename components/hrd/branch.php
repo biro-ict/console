@@ -18,7 +18,6 @@
                             <input type="text" class="form-control form-control-sm" placeholder="Cari" id="cari">
                         </div>
                         <div class="col-md-12 mb-3">
-                            <caption class="text-muted small-text">Total Cabang: <span id="total">0</span></caption>
                             <article class="table-responsive" style="height: 400px">
                                 <table class="table table-striped table-hover">
                                     <thead style="background: white; position: sticky; top: 0;box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);">
@@ -30,6 +29,7 @@
                                     <tbody id="tbl-branch"></tbody>
                                 </table>
                             </article>
+                            <caption class="text-muted small-text">Total Cabang: <span id="total">0</span></caption>
                         </div>
                         
                     </div>
@@ -37,7 +37,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addBranch">Tambah</button>
-                    <button type="button" class="btn btn-info btn-sm" id="updateBranch">Ubah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateBranch">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteBranch">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                     <button type="button" class="btn btn-success btn-sm" id="exportBranch">Export to Excel</button>

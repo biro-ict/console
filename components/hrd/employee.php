@@ -21,7 +21,7 @@
                             <input type="text" class="form-control form-control-sm" placeholder="Cari" id="cari">
                         </div>
                         <div class="col-md-12 mb-3">
-                            <div class="table-responsive" style="height: 400px">
+                            <article class="table-responsive" style="height: 400px">
                                 <table class="table table-striped table-hover">
                                     <thead style="background: white; position: sticky; top: 0;box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);">
                                         <th class="col">#</th>
@@ -36,7 +36,8 @@
                                     </thead>
                                     <tbody id="tbl-empl"></tbody>
                                 </table>
-                            </div>
+                            </article>
+                            <caption class="text-muted">Total: <span id="total">0</span></caption>
                         </div>
                         
                     </div>
@@ -44,7 +45,7 @@
                 
                 <div class="card-footer mt-3">
                     <button type="button" class="btn btn-primary btn-sm" id="addEmpl">Tambah</button>
-                    <button type="button" class="btn btn-info btn-sm" id="updateEmpl">Ubah</button>
+                    <button type="button" class="btn btn-warning btn-sm" id="updateEmpl">Ubah</button>
                     <button type="button" class="btn btn-danger btn-sm" id="deleteEmpl">Hapus</button>
                     <button type="button" class="btn btn-secondary btn-sm" id="backto">Kembali</button>
                 </div>
@@ -173,6 +174,7 @@
     })
 
     function show_table(branch, depts,query) {
+        var total = 0
         var tbody = ''
         $.ajax({
             url: url_api + '/users/search',
@@ -184,7 +186,7 @@
             },
             success: function(res) {
                 if(res.status == 'success') {
-                    
+                    total = res.data.length
                     var data = res.data
                     data.forEach(function(row, index) {
                         tbody = tbody + `
@@ -207,6 +209,7 @@
                 }
 
                 $('#tbl-empl').html(tbody)
+                $('#total').html(total)
                 
             }
         })
