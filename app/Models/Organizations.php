@@ -6,7 +6,7 @@
     class Organizations extends Model {
 
         function see_orgz() {
-            $get = DB::table('organizations')->get();
+            $get = DB::table('organizations')->where('deleted', 0)->get();
             return response()->json([
                 'title' => count($get) > 0 ? 'Berhasil' : 'Gagal',
                 'message' => count($get) > 0 ? 'Data organisasi berhasil diambil' : 'Data organisasi gagal diambil',
